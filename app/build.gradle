@@ -6,20 +6,34 @@ android {
         exclude 'META-INF/LICENSE.txt'
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.hashengineering.abcore"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 33
-        versionName "0.33"
+        versionCode 43
+        versionName "0.43"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dexOptions {
+        maxProcessCount 4
+        javaMaxHeapSize "2g"
+    }
+
+    productFlavors {
+        prod {
+            versionCode Integer.parseInt(String.format("%s%s", 16, defaultConfig.getProperty("versionCode")))
+        }
+        prod_21 {
+            minSdkVersion 21
+            versionCode Integer.parseInt(String.format("%s%s", 21, defaultConfig.getProperty("versionCode")))
         }
     }
 }
@@ -31,12 +45,12 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
     compile 'org.apache.commons:commons-compress:1.10'
     compile 'org.tukaani:xz:1.5'
     compile 'net.rdrei.android.dirchooser:library:3.0@aar'
     compile 'wf.bitcoin:JavaBitcoindRpcClient:0.9.9'
-    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:support-v4:23.3.0'
     compile 'com.gu:option:1.3'
 }

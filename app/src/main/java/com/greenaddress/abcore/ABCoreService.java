@@ -1,6 +1,9 @@
 package com.greenaddress.abcore;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,12 +18,31 @@ import java.util.Map;
 
 public class ABCoreService extends Service {
 
-    final static String TAG = ABCoreService.class.getName();
+    private final static String TAG = ABCoreService.class.getName();
+    final static int NOTIFICATION_ID = 922430164;
     private Process mProcess;
 
     @Override
     public IBinder onBind(final Intent intent) {
         return null;
+    }
+
+    private void setupNotification() {
+        final Intent myIntent = new Intent(this, MainActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                myIntent, PendingIntent.FLAG_ONE_SHOT);
+        final NotificationManager nMN = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        final Notification n = new Notification.Builder(this)
+                .setContentTitle("Abcore is running")
+                .setContentIntent(pendingIntent)
+                .setContentText("Currently started")
+                .setSmallIcon(R.drawable.ic_info_black_24dp)
+                .setOngoing(true)
+                .build();
+
+        nMN.notify(NOTIFICATION_ID, n);
     }
 
     @Override
@@ -48,9 +70,9 @@ public class ABCoreService extends Service {
             final Boolean archEnabled = prefs.getBoolean("archisenabled", false);
 
             if (archEnabled) {
-                ld_linux = String.format("%s/usr/lib/ld-2.22.so", dir.getAbsoluteFile());
+                ld_linux = String.format("%s/usr/lib/ld-2.23.so", dir.getAbsoluteFile());
             } else if ("amd64".equals(arch) || "arm64".equals(arch)) {
-                ld_linux = String.format("%s/lib/%s-linux-gnu/ld-2.21.so", dir.getAbsolutePath(), aarch);
+                ld_linux = String.format("%s/lib/%s-linux-gnu/ld-2.22.so", dir.getAbsolutePath(), aarch);
             } else if ("armhf".equals(arch)) {
                 ld_linux = String.format("%s/lib/ld-linux-armhf.so.3", dir.getAbsolutePath());
             } else {
@@ -88,11 +110,32 @@ public class ABCoreService extends Service {
             pb.directory(new File(Utils.getDataDir(this)));
 
             mProcess = pb.start();
-            final ProcessLogger errorGobbler = new ProcessLogger(mProcess.getErrorStream());
-            final ProcessLogger outputGobbler = new ProcessLogger(mProcess.getInputStream());
+            final ProcessLogger.OnError er = new ProcessLogger.OnError() {
+                @Override
+                public void OnError(final String[] error) {
+                    ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFICATION_ID);
+                    final StringBuilder bf = new StringBuilder();
+                    for (final String e : error) {
+                        if (e != null && !e.isEmpty()) {
+                            bf.append(String.format("%s%s", e, System.getProperty("line.separator")));
+                        }
+                    }
+                    final Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction(MainActivity.DownloadInstallCoreResponseReceiver.ACTION_RESP);
+                    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                    broadcastIntent.putExtra("abtcore", "exception");
+                    broadcastIntent.putExtra("exception", bf.toString());
+
+                    sendBroadcast(broadcastIntent);
+                }
+            };
+            final ProcessLogger errorGobbler = new ProcessLogger(mProcess.getErrorStream(), er);
+            final ProcessLogger outputGobbler = new ProcessLogger(mProcess.getInputStream(), er);
 
             errorGobbler.start();
             outputGobbler.start();
+
+            setupNotification();
 
         } catch (final IOException e) {
             Log.i(TAG, "Native exception!");

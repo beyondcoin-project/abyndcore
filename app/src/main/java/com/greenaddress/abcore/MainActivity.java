@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-    final static String TAG = MainActivity.class.getName();
+    private final static String TAG = MainActivity.class.getName();
     private DownloadInstallCoreResponseReceiver downloadInstallCoreResponseReceiver;
     private RPCResponseReceiver rpcResponseReceiver;
 
@@ -79,14 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void reset() {
 
         final TextView tw = (TextView) findViewById(R.id.textViewDetails);
         final TextView status = (TextView) findViewById(R.id.textView);
@@ -110,14 +103,34 @@ public class MainActivity extends AppCompatActivity {
 
             final String msg = String.format("Architeture %s is unsupported", e.arch);
             status.setText(msg);
-
-            Snackbar.make(findViewById(android.R.id.content),
-                    msg, Snackbar.LENGTH_INDEFINITE).show();
+            showSnackMsg(msg, Snackbar.LENGTH_INDEFINITE);
             return;
         }
 
         // rpc check to see if core is already running!
         startService(new Intent(this, RPCIntentService.class));
+    }
+
+    private void showSnackMsg(final String msg) {
+        showSnackMsg(msg, Snackbar.LENGTH_LONG);
+    }
+
+    private void showSnackMsg(final String msg, final int length) {
+        if (msg != null && !msg.trim().isEmpty()) {
+            Snackbar.make(findViewById(android.R.id.content),
+                    msg, length).show();
+        }
+    }
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        reset();
     }
 
     private String getSpeed(final int bytesPerSec) {
@@ -212,6 +225,22 @@ public class MainActivity extends AppCompatActivity {
                 case "exception": {
                     String exe = intent.getStringExtra("exception");
                     Log.i(TAG, exe);
+                    showSnackMsg(exe);
+                    final Button button = (Button) findViewById(R.id.button);
+                    final TextView status = (TextView) findViewById(R.id.textView);
+                    final ProgressBar pb = (ProgressBar) MainActivity.this.findViewById(R.id.progressBar);
+
+                    button.setEnabled(true);
+                    pb.setVisibility(View.GONE);
+                    pb.setProgress(0);
+                    status.setText("Please select SETUP BITCOIN CORE to download and configure Core");
+                    final Switch coreSwitch = (Switch) MainActivity.this.findViewById(R.id.switchCore);
+
+                    if (coreSwitch.isChecked()) {
+                        coreSwitch.setChecked(false);
+                    }
+
+                    reset();
                     break;
                 }
                 case "ABCOREUPDATE": {
@@ -281,8 +310,7 @@ public class MainActivity extends AppCompatActivity {
                             status.setText(msg);
 
                             button.setVisibility(View.GONE);
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    msg, Snackbar.LENGTH_INDEFINITE).show();
+                            showSnackMsg(msg, Snackbar.LENGTH_INDEFINITE);
                         }
 
                         if (external < 70000) {
@@ -290,8 +318,8 @@ public class MainActivity extends AppCompatActivity {
                             status.setText(msg);
 
                             // button.setVisibility(View.GONE);
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    msg, Snackbar.LENGTH_LONG).show();
+                            showSnackMsg(msg);
+
                         }
 
 

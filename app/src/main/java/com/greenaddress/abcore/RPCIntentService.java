@@ -1,6 +1,7 @@
 package com.greenaddress.abcore;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -29,7 +30,7 @@ public class RPCIntentService extends IntentService {
         super(RPCIntentService.class.getName());
     }
 
-    Properties getBitcoinConf() throws IOException {
+    private Properties getBitcoinConf() throws IOException {
         final Properties p = new Properties();
         final InputStream i = new BufferedInputStream(new FileInputStream(Utils.getBitcoinConf(this)));
         try {
@@ -40,7 +41,7 @@ public class RPCIntentService extends IntentService {
         return p;
     }
 
-    String getRpcUrl() throws IOException {
+    private String getRpcUrl() throws IOException {
         final Properties p = getBitcoinConf();
         final String user = p.getProperty("rpcuser", "groestlcoinrpc");
         final String password = p.getProperty("rpcpassword");
@@ -57,7 +58,7 @@ public class RPCIntentService extends IntentService {
         return nonMainnet == null || !nonMainnet.equals("1") ? url : testUrl;
     }
 
-    BitcoindRpcClient getRpc() throws IOException {
+    private BitcoindRpcClient getRpc() throws IOException {
         return new BitcoinJSONRPCClient(getRpcUrl());
     }
 
@@ -124,6 +125,8 @@ public class RPCIntentService extends IntentService {
                 getRpc().stop();
             } catch (final BitcoinRPCException | IOException e) {
                 broadcastError(e);
+            } finally {
+                ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(ABCoreService.NOTIFICATION_ID);
             }
             return;
         }
@@ -145,7 +148,8 @@ public class RPCIntentService extends IntentService {
 
                     final String[] array = console_request.split(" ");
                     if (array.length > 1) {
-                        broadcastIntent.putExtra("res", bitcoin.query(array[0], Arrays.copyOfRange(array, 1, array.length)).toString());
+                        broadcastIntent.putExtra("res", bitcoin.query(array[0],
+                                (Object[])Arrays.copyOfRange(array, 1, array.length)).toString());
 
                     } else {
                         broadcastIntent.putExtra("res", bitcoin.query(console_request).toString());

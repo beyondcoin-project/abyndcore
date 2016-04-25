@@ -63,7 +63,7 @@ class Utils {
 
                 // we don't need these files so may as well skip them
                 if (entryName.contains("usr/share/")
-                        || entryName.contains("bitcoin-cli")
+                        || entryName.contains("groestlcoin-cli")
                         || entryName.contains("usr/include")
                         || entryName.contains("etc/")
                         || entryName.contains("python")
@@ -94,7 +94,7 @@ class Utils {
                         || entryName.contains("usr/lib/engines")
                         || entryName.contains("mpi.so")
                         || entryName.endsWith(".a")
-                        || (entryName.contains("usr/bin") && !entryName.contains("bitcoind"))
+                        || (entryName.contains("usr/bin") && !entryName.contains("groestlcoind"))
                         || entryName.contains("libasan")
                         || (entryName.contains("libboost") && (
                         !entryName.contains("system")
@@ -272,7 +272,7 @@ class Utils {
 
     static String getBitcoinConf(final Context c) {
 
-        return String.format("%s/.bitcoin/bitcoin.conf", getDir(c).getAbsolutePath());
+        return String.format("%s/.groestlcoin/groestlcoin.conf", getDir(c).getAbsolutePath());
     }
 
     static File getLargestFilesDir(final Context c) {
@@ -301,7 +301,7 @@ class Utils {
     }
 
     static String getDataDir(final Context c) {
-        final String defaultDataDir = String.format("%s/.bitcoin", getLargestFilesDir(c).getAbsolutePath());
+        final String defaultDataDir = String.format("%s/.groestlcoin", getLargestFilesDir(c).getAbsolutePath());
         try {
             final Properties p = new Properties();
             p.load(new BufferedInputStream(new FileInputStream(getBitcoinConf(c))));

@@ -42,7 +42,7 @@ public class RPCIntentService extends IntentService {
 
     String getRpcUrl() throws IOException {
         final Properties p = getBitcoinConf();
-        final String user = p.getProperty("rpcuser", "bitcoinrpc");
+        final String user = p.getProperty("rpcuser", "groestlcoinrpc");
         final String password = p.getProperty("rpcpassword");
         final String host = p.getProperty("rpcconnect", "127.0.0.1");
         final String port = p.getProperty("rpcport");
@@ -51,8 +51,8 @@ public class RPCIntentService extends IntentService {
 
         final String nonMainnet = testnet == null || !testnet.equals("1") ? p.getProperty("regtest") : testnet;
 
-        final String url = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "8332" : port) + "/";
-        final String testUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "18332" : port) + "/";
+        final String url = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "1441" : port) + "/";
+        final String testUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "17766" : port) + "/";
 
         return nonMainnet == null || !nonMainnet.equals("1") ? url : testUrl;
     }

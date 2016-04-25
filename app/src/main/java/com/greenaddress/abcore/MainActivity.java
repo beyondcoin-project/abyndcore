@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView status = (TextView) activity.findViewById(R.id.textView);
         final Button button = (Button) activity.findViewById(R.id.button);
         button.setVisibility(View.GONE);
-        status.setText("Bitcoin Core is running, please switch Core OFF to stop it.");
+        status.setText("Groestlcoin Core is running, please switch Core OFF to stop it.");
         final Switch coreSwitch = (Switch) activity.findViewById(R.id.switchCore);
 
         coreSwitch.setVisibility(View.VISIBLE);
@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
         final ProgressBar pb = (ProgressBar) activity.findViewById(R.id.progressBar);
         pb.setVisibility(View.GONE);
         final TextView tw = (TextView) activity.findViewById(R.id.textViewDetails);
-        tw.setText("Bitcoin core fetched and configured");
+        tw.setText("Groestlcoin core fetched and configured");
         final TextView status = (TextView) activity.findViewById(R.id.textView);
         final Button button = (Button) activity.findViewById(R.id.button);
-        status.setText("Bitcoin Core is not running, please switch Core ON to start it");
+        status.setText("Groestlcoin Core is not running, please switch Core ON to start it");
         button.setVisibility(View.GONE);
         setSwitch(activity);
     }
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     button.setEnabled(false);
                     final TextView status = (TextView) findViewById(R.id.textView);
 
-                    status.setText("Please wait. Fetching, unpacking and configuring bitcoin core...");
+                    status.setText("Please wait. Fetching, unpacking and configuring groestlcoin core...");
 
                     break;
                 }
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case "exception":
 
-                    final boolean requiresDownload = !new File(Utils.getDir(context).getAbsolutePath() + "/usr/bin", "bitcoind").exists();
+                    final boolean requiresDownload = !new File(Utils.getDir(context).getAbsolutePath() + "/usr/bin", "groestlcoind").exists();
                     final TextView status = (TextView) findViewById(R.id.textView);
                     final Button button = (Button) findViewById(R.id.button);
                     final ProgressBar pb = (ProgressBar) MainActivity.this.findViewById(R.id.progressBar);
@@ -264,14 +264,14 @@ public class MainActivity extends AppCompatActivity {
                         final float external = Utils.megabytesAvailable(Utils.getLargestFilesDir(MainActivity.this));
 
                         if (internal > 70) {
-                            status.setText("Please select SETUP BITCOIN CORE to download and configure Core");
+                            status.setText("Please select SETUP GROESTLCOIN CORE to download and configure Core");
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(final View v) {
                                     button.setEnabled(false);
                                     pb.setVisibility(View.VISIBLE);
                                     pb.setProgress(0);
-                                    status.setText("Please wait. Fetching, unpacking and configuring bitcoin core...");
+                                    status.setText("Please wait. Fetching, unpacking and configuring groestlcoin core...");
 
                                     startService(new Intent(MainActivity.this, DownloadInstallCoreIntentService.class));
                                 }
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (external < 70000) {
-                            final String msg = String.format("You have %sMB but need about 70GB available in the external memory", external);
+                            final String msg = String.format("You have %sMB but need about 1GB available in the external memory", external);
                             status.setText(msg);
 
                             // button.setVisibility(View.GONE);

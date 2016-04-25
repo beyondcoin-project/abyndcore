@@ -12,11 +12,27 @@ public class Packages {
 
     private final static List<PkgH> ARCH_PACKAGES;
     private final static List<PkgH> DEB_PACKAGES;
+    private final static List<PkgH> JONES_PACKAGES;
 
     static {
 
         // FIXME: some deps are not needed, ideally we just build what we need with a static binary, built with the NDK
         // This works for now
+        JONES_PACKAGES = new ArrayList<>(
+                Arrays.asList(
+
+                        new PkgH("g/groestlcoin/groestlcoind_2.11.0+20160407-2~0jones.dk1",
+                                Arrays.asList(
+                                        "i386cd1942c9578e612c640bfd489520362ace4c25323600abd0a71d58e014a9c3bf",
+                                        //"arm649f07b57c32e9d52adc774effb6739b379cd2f17b59c0115a90e9303acbb2507c",
+                                        //"amd646649a791daa8258133b9152a77376a02924461777df7ca4c76d0f6142090ee89",
+                                        "armhf76464f9ebabaecfd475e5e347d11cfc3757255952228fc827a0db3c9d1d970dd")),
+
+        new PkgH("g/groestlcoin/\tgroestlcoind_2.11.0+20160407-2",
+                Arrays.asList(
+                        "amd646649a791daa8258133b9152a77376a02924461777df7ca4c76d0f6142090ee89"))
+                )
+        );
 
         DEB_PACKAGES = new ArrayList<>(
                 Arrays.asList(
@@ -47,6 +63,8 @@ public class Packages {
                                         "amd6459d6099be900dc2326e6e2ef1750df80a7d6d265ddfc35453b41bc4651f176ac")),
 
                         /*arm**/
+
+
 
                         new PkgH("b/boost1.58/libboost-filesystem1.58.0_1.58.0+dfsg-5",
                                 Arrays.asList(
@@ -108,19 +126,19 @@ public class Packages {
                                         "amd6419af5899a3179dbf2978cc27f07c7b56ae4fef4e09567e18feba7638feddd853",
                                         "armhff49b6e02281467a3f62f0a5d310566ca5d07bd2910cc308f7efc8f3f3b4c3593")),
 
-                        new PkgH("g/gcc-5/libgcc1_5.3.1-10",
+                        new PkgH("g/gcc-5/libgcc1_5.3.1-14",
                                 Arrays.asList(
-                                        "i386b8d0018fb89bd22fc44531ba51fea4240d179afa51a76c623164484227de0406",
-                                        "arm649820429f52d09c8dccd1837889f5cd8c3a70b18da1ce4f2e6dc86d59514e531a",
-                                        "amd64c96eab0e932cf5cd7f5351f6973f815905c5d768ea8bcbbe9c6ead9fd2fbbe13",
-                                        "armhf1b4b9f999c3ca0259b115841019a281f463279c6c0498fe54a962a8c31450f55")),
+                                        "i386736c688d7821df61a6ed1ad367ef54d364913d738440fd257f84b7df0b6b0014",
+                                        "arm640f81279f43b73a740ca39ea673c89e7aaa3f22f965a627b23747d93c2f117e3a",
+                                        "amd647dbd839deaafd69bf6eeac2bfd3371595d23bce7ff2326bd19011cfc875d0fb6",
+                                        "armhf89442fda81b5b3664957201cf2a931b3e2c1a4eaf992eb9cb25e9f4e0fbbb3ed")),
 
-                        new PkgH("g/gcc-5/libstdc++6_5.3.1-10",
+                        new PkgH("g/gcc-5/libstdc++6_5.3.1-14",
                                 Arrays.asList(
-                                        "i386784a313b659d16c3ca9fca009b34801d0d2cd88ce0211a7e47be30000026a2a2",
-                                        "arm6415f3ae39ca7ba87d45feeff2b20001ff9b6fbbffbadb063bd82ae9ea12984467",
-                                        "amd649bf24efad2d645f3117f727ec79c5b16c0bdd9ea9ea01686c1e5e3f97f6213a9",
-                                        "armhf59dc6f6ea3516fca2739e1b90caf81d1796e9fd02a35c88f33d68b0fd7d67e82")),
+                                        "i386d1ff2c2ac83819ef0f4d587d91891c904861bf4d30a3d7f1622644a41582e301",
+                                        "arm6474c45a8b9ccb51060e067e6d03f6af4c42e39e296fdfca9809ac8484972fc303",
+                                        "amd64cbdf67b77ee394995ec5e5a037484b21af45d2709eda9f158c629cd6eb150a99",
+                                        "armhfb23aa5afc511151f5249c61ed3928192a5d7d18007c783ccf9c4878aff12f365")),
 
                         new PkgH("d/db5.3/libdb5.3++_5.3.28-11",
                                 Arrays.asList(
@@ -129,19 +147,58 @@ public class Packages {
                                         "amd6438021e5e4adaccaf38933358ff87ec8eb243d5bf516bef5cffdc56dd1f182d8e",
                                         "armhfaeb63f1b5c8611a3c4180e819987eb3b5ce9f95a64927d31c1740995d4ed81c8")),
 
-                        new PkgH("g/glibc/libc6_2.21-9",
+                        new PkgH("g/glibc/libc6_2.22-6",
                                 Arrays.asList(
-                                        "i386ae15e8b9bbee5db9e2d37dda07cdd6d3601dd6b78e86df641d6a590427332ca6",
-                                        "arm64cd570669a665ee70ddf6cb4069a6aa57a56524e4950b4ae3df3862f7a5982fa5",
-                                        "amd640b27840c351c57f11223a83c5d99e2fdeeaf9334e51d9c5abdf91d2aa2ef593e",
-                                        "armhf6c1f83455940a9b84f59b944bac8be9ae289bd79a1343123ee73fb31027822ce")),
+                                        "i38649a53a2f09595afcd79d74403f71e17d239eae1ef12f1f318faf41cbb313bf3f",
+                                        "arm64bfd9ef04d446a0b518fad62e4729e52b57c43e321a797e81369b926b0569b9cb",
+                                        "amd647deef84ae1b298eed9c95540dd78adfaeefd47aba55726236834697dfd883a39",
+                                        "armhf49cd2e3eb874d6386582fa6457c5a80bbe48295fa47e69ce69cb42ef71d9f51b")),//,
 
-                        new PkgH("b/bitcoin/bitcoind_0.11.2-1",
+                        new PkgH("libu/libunivalue/libunivalue0_1.0.2-2",
+                                Arrays.asList(
+                                        "i386b050af366964de446c9d3cfaab1fbee5a928adb97f68095ca35625e8eb2a83d4",
+                                        "arm64588ca8a959322e7d4c67d5a471834034d94359ff26afb4a614805137565a125a",
+                                        "amd6472eefb24ce1f9d841a5722fead9f1ce2c87633d73b59474e7c70b975f07946a3",
+                                        "armhf95ce229b34c0b47eb3116cd9908a854f9e3ae1f8a1aba0249e69c73a062f35cd"
+                                )),
+
+                        new PkgH("l/leveldb/libleveldb1v5_1.18-5",
+                                Arrays.asList(
+                                        "i386a00b3ba1ef8433d477e286b06b4a78d8ac57f3dd9bd39197f75c924f8cf5e654",
+                                        "arm64b1d07a1afa158291d83e3ba633f87257436f40616dcfa25af4e69de354a46338",
+                                        "amd644961a1990cb1b19c56a28234bf75e4b41c861670d5909fdc55505d1854a3f44a",
+                                        "armhfe642d2d3bf8e078a89366f02fac8cad0cbeefeb74320a41d920e9c1d97bcc3d4"
+                                )),
+                        new PkgH("/libs/libsecp256k1/libsecp256k1-0_0.1~20160216-2",
+                                Arrays.asList(
+                                        "i3869fff95a74289b48227e3d1ed0ba8aa40a5381432e961952a920237d540694ea3",
+                                        "arm64e5e38bf59cae103f56d81f7b60b22e12c370938d80a33c342ff671d33f6a2fd0",
+                                        "amd64f8eb93edade61f9519e1c3d7f1980d8e827c64c7e2421a256a5d181707dc0da8",
+                                        "armhf9030fd9560356bb889319163a13410f9f17b4678cc6d83aad950ac71e89c7023"
+                                )),
+                        new PkgH("g/gmp/libgmp10_6.0.0+dfsg-6",
+                                Arrays.asList(
+                                        "i386e6736efd94fe18cedfb513c3d339fa3a4427001b16cb58c963a63b02c9cbf4ff",
+                                        "arm64fbda404878b5142136adf2d4107cd268f2bde64ea8f46e05e4ea2aafd9bd3b12",
+                                        "amd64155a31b0f716aa3dcd7ee68e9bd57e0b76a6b31f4e41fb2d953e986315437082",
+                                        "armhfa3eb58a46f59a2707839714df65d1c79d5a600de129049d2314c27e5ebbea24c"
+
+                                )),
+                        new PkgH("s/snappy/libsnappy1_1.1.2-3",
+                                Arrays.asList(
+                                        "i3861d85daab322cbe28ad31845d1b2c9a81e098e2f0d1d86b283d0b3b38fc101247",
+                                        "arm6437d2ae2911e289017834cc36290f664bbb14035d80f5b51bde84e8731bca55cf",
+                                        "amd641d85daab322cbe28ad31845d1b2c9a81e098e2f0d1d86b283d0b3b38fc101247",
+                                        "armhfd5e8cc347497153ffc5b9647397873cbfc8413df3d090925e8ce389c6309c898"
+                                ))
+
+                        /*new PkgH("b/bitcoin/bitcoind_0.11.2-1",
                                 Arrays.asList(
                                         "i386347449b94112686dc31d86e4dbc026a30d0352a60edf58365ae33e0117b90b0b",
                                         "arm64f027c349237acc1f485a9f52dddbdcf81b888f8ca496e64b3ea9e8b88405bea5",
                                         "amd6437b25a47c7e4490df58bd6fbe292e6f224fd69c2bc28f57af846b67ffaf12728",
                                         "armhf8ef112f4fca5ba20e7d701095193d00e6e07e5ccbb1c8d0f52c11cb3c9fe3b04"))
+                                        */
                 )
         );
 
@@ -232,6 +289,7 @@ public class Packages {
                                         "amd64e43e7136f91daf252fc96affcfab01473321187de8b6c5e0245f9b2fc4554380",
                                         "i386362f1f7c7add7fce9e8448f517260099c731b81ed85e6d9f1a3a4377f9873e13"))
                 ));
+
     }
 
     private static List<PkgH> getPackages(final String arch, final List<Packages.PkgH> static_pkgs) {
@@ -258,6 +316,7 @@ public class Packages {
         } else {
             return prefs.getString("debianRepo", "ftp.us.debian.org/debian");
         }
+        //return prefs.getString("jonesRepo", "deb.jones.dk/debian-jones.dk");
     }
 
     static String getPackageUrl(final Packages.PkgH pkg, final Context c, final String arch, final boolean isArchLinux) {
@@ -271,6 +330,39 @@ public class Packages {
 
         final String template = isArchLinux ?
                 (isArmArchitecture ? "http://%s/%s-" + fileArch : "http://%s/%s-" + osArch) + ".pkg.tar.xz" : "http://%s/pool/main/%s_%s.deb";
+        //final String template = isArchLinux ?
+        //        (isArmArchitecture ? "http://%s/%s-" + fileArch : "http://%s/%s-" + osArch) + ".pkg.tar.xz" : "http://%s/pool/cryptocoins/%s_%s.deb";
+
+        return isArchLinux ? String.format(template, repo, String.format(pkg.pkg, fileArch)) : String.format(template, repo, pkg.pkg, arch);
+    }
+
+    static String getRepoG(final Context c, final String arch, final boolean isArchEnabled) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+        /*if (isArchEnabled) {
+            if (arch.equals("amd64") || arch.equals("i386")) {
+                return prefs.getString("archi386Repo", "archlinux.openlabto.org/archlinux");
+            } else {
+                return prefs.getString("archarmRepo", "eu.mirror.archlinuxarm.org");
+            }
+        } else {
+            return prefs.getString("debianRepo", "ftp.us.debian.org/debian");
+        }*/
+        return prefs.getString("jonesRepo", "deb.jones.dk/debian-jones.dk");
+    }
+
+    static String getPackageUrlG(final Packages.PkgH pkg, final Context c, final String arch, final boolean isArchLinux) {
+
+        final String osArch = Utils.getArchLinuxArchitecture(arch);
+
+        final boolean isArmArchitecture = !arch.equals("amd64") && !arch.equals("i386");
+        final String repo = getRepoG(c, arch, isArchLinux);
+
+        final String fileArch = arch.equals("armhf") ? "armv7h" : osArch;
+
+        //final String template = isArchLinux ?
+//                (isArmArchitecture ? "http://%s/%s-" + fileArch : "http://%s/%s-" + osArch) + ".pkg.tar.xz" : "http://%s/pool/main/%s_%s.deb";
+        final String template = isArchLinux ?
+                (isArmArchitecture ? "http://%s/%s-" + fileArch : "http://%s/%s-" + osArch) + ".pkg.tar.xz" : "http://%s/pool/cryptocoins/%s_%s.deb";
 
         return isArchLinux ? String.format(template, repo, String.format(pkg.pkg, fileArch)) : String.format(template, repo, pkg.pkg, arch);
     }
@@ -279,6 +371,9 @@ public class Packages {
         return getPackages(arch, DEB_PACKAGES);
     }
 
+    public static List<PkgH> getDebPackagesG(final String arch) {
+        return getPackages(arch, JONES_PACKAGES);
+    }
     public static List<PkgH> getArchPackages(final String arch) {
         return getPackages(arch, ARCH_PACKAGES);
     }

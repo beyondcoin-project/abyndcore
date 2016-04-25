@@ -63,7 +63,7 @@ public class ABCoreService extends Service {
             // used
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             final ProcessBuilder pb = new ProcessBuilder(ld_linux,
-                    String.format("%s/usr/bin/bitcoind", dir.getAbsolutePath()),
+                    String.format("%s/usr/bin/groestlcoind", dir.getAbsolutePath()),
                     "-server=1",
                     String.format("-datadir=%s", Utils.getDataDir(this)),
                     String.format("-conf=%s", Utils.getBitcoinConf(this)));
@@ -82,6 +82,7 @@ public class ABCoreService extends Service {
                             String.format("%s/lib/arm-linux-gnueabihf", dir.getAbsolutePath()),
                             String.format("%s/usr/lib/%s-linux-%s", dir.getAbsolutePath(), aarch, gnu),
                             String.format("%s/usr/lib/arm-linux-gnueabihf", dir.getAbsolutePath())
+                            //String.format("%s/usr/lib/arm-linux-gnueabihf/openssl-1.0.2/engines", dir.getAbsolutePath())
                     ));
 
             pb.directory(new File(Utils.getDataDir(this)));

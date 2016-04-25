@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">ABCore</string>
+    <string name="app_name">AGCore</string>
     <string name="title_activity_settings">Settings</string>
 
-    <string name="pref_header_source">Bitcoin Core Repository</string>
+    <string name="pref_header_source">Groestlcoin Core Repository</string>
 
 
     <string name="pref_title_debian_repo">Select Debian mirror</string>
@@ -10,9 +10,9 @@
     <string name="pref_title_arch_repo">Select Arch mirror</string>
 
 
-    <string name="pref_title_edit_bitcoin_conf">Manually edit bitcoin.conf</string>
+    <string name="pref_title_edit_bitcoin_conf">Manually edit groestlcoin.conf</string>
 
-    <string name="pref_header_conf">Bitcoin Core Configuration</string>
+    <string name="pref_header_conf">Groestlcoin Core Configuration</string>
     <string name="title_activity_peer">Peers</string>
     <string name="title_activity_progress">Synchronization progress</string>
 

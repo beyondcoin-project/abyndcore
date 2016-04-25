@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="ABCore is an Android app that makes it easy to run Bitcoin Core by acting as a wrapper.\n\nABCore is released under the terms of the MIT license. See opensource.org/licenses/MIT for more information.\n\nYou can find the source code on github.com/greenaddress/abcore"
+            android:text="ABCore is an Android app that makes it easy to run Bitcoin Core by acting as a wrapper.\n\nAGCore is released under the terms of the MIT license. See opensource.org/licenses/MIT for more information.\n\nYou can find the source code on github.com/greenaddress/abcore"
             android:id="@+id/textViewAboutText" android:layout_below="@+id/textViewAbout"
             android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
             android:layout_marginTop="24dp" android:layout_alignParentRight="true"

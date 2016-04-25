@@ -9,7 +9,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.greenaddress.abcore"
+        applicationId "com.hashengineering.abcore"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 33

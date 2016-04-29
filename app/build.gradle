@@ -12,8 +12,8 @@ android {
         applicationId "com.hashengineering.abcore"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 431
-        versionName "0.43.1"
+        versionCode 432
+        versionName "0.43.2"
     }
     buildTypes {
         release {

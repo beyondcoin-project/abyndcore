@@ -136,8 +136,8 @@ public class DownloadInstallCoreIntentService extends IntentService {
     }
     private List<Packages.PkgH> getPackagesG() {
         final String arch = Utils.getArch();
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final Boolean archEnabled = prefs.getBoolean("archisenabled", false);
+        //final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //final Boolean archEnabled = prefs.getBoolean("archisenabled", false);
         return Packages.getDebPackagesG(arch);
     }
     @Override

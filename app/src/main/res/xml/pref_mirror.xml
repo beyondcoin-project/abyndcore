@@ -1,22 +1,24 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
+    <!--SwitchPreference
         android:id="@+id/debianonoff"
         android:key="debianisenabled"
         android:defaultValue="true"
         android:title="Use Debian packages (0.11.2)"
         android:summaryOn="Using Debian, switch this Off for Arch"
         android:summaryOff="Using Arch, switch this On for Debian"
-    />
+        android:visibility="gone"
+    /-->
 
-    <SwitchPreference
+    <!--SwitchPreference
         android:id="@+id/archonoff"
         android:key="archisenabled"
         android:defaultValue="false"
         android:title="Use Arch packages (0.12)"
         android:summaryOn="Using Arch, switch this Off for Debian"
         android:summaryOff="Using Debian, switch this On for Arch"
-    />
+        android:visibility="gone"
+    /-->
 
     <ListPreference
         android:defaultValue="ftp.us.debian.org/debian"
@@ -27,11 +29,10 @@
         android:positiveButtonText="@null"
         android:summary="ftp.us.debian.org/debian"
         android:title="@string/pref_title_debian_repo"
-        android:dependency="debianisenabled"
 
     />
 
-    <ListPreference
+    <!--ListPreference
         android:defaultValue="eu.mirror.archlinuxarm.org"
         android:entries="@array/arm_arch_repos_array"
         android:entryValues="@array/arm_arch_repos_array"
@@ -55,6 +56,6 @@
         android:title="@string/pref_title_arch_repo"
         android:dependency="archisenabled"
 
-    />
+    /-->
 
 </PreferenceScreen>

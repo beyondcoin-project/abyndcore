@@ -158,7 +158,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference("debianRepo"));
 
-            final ListPreference armArchRepo = (ListPreference) findPreference("archarmRepo");
+            /*final ListPreference armArchRepo = (ListPreference) findPreference("archarmRepo");
             final ListPreference archi386Repo = (ListPreference) findPreference("archi386Repo");
             if (Utils.getArch().equals("amd64") || Utils.getArch().equals("i386")) {
                 bindPreferenceSummaryToValue(archi386Repo);
@@ -168,11 +168,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 bindPreferenceSummaryToValue(armArchRepo);
                 getPreferenceScreen().removePreference(archi386Repo);
             }
+*/
+            //final SwitchPreference arch = (SwitchPreference) findPreference("archisenabled");
 
-            final SwitchPreference arch = (SwitchPreference) findPreference("archisenabled");
-
-            final SwitchPreference debian = (SwitchPreference) findPreference("debianisenabled");
-
+            //final SwitchPreference debian = (SwitchPreference) findPreference("debianisenabled");
+/*
             debian.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
@@ -198,7 +198,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
-
+*/
         }
 
         @Override

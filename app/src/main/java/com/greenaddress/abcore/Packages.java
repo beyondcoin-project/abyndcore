@@ -91,12 +91,12 @@ public class Packages {
                                         "arm646005a147386e1aa61c56889a4d545ab75bf826abcd8fa505825b3cad774a00a5",
                                         "armhf7ea3951210eb664e8d2f3f1a8547da42a7c9a9984f2e5839c8d1ba28b429ec5d")),
                         /*common**/
-                        new PkgH("o/openssl/libssl1.0.2_1.0.2g-1",
+                        new PkgH("o/openssl/libssl1.0.2_1.0.2h-1",
                                 Arrays.asList(
-                                        "i38622a0203b53a5b053efb2a57fa175dc363ada9f9a6fe4e9c5604be23527c49c64",
-                                        "arm64dc529be71940bad29414c06df38026701e0b92b99e4e9a2629b07822ff70f1ea",
-                                        "amd64e97a67a47e1c50fb39bd75cdbb9ec8b81adf0ae727676889207571d437e4ce24",
-                                        "armhffe882ff51b631db7179e14f6475b6f74b0bcc5405e89a70464d949d2f0e2b9ef")),
+                                        "i3864edb61d59c63c56709a5501aee32f633bec11191c8004a34502d6cd98238b389",
+                                        "arm6461fb1c31dc2add0ce9422a24dbc8461ca1d5ff7735c3d5ddf76be020dfe50c5c",
+                                        "amd6483035ac443512f7d2d9867cd50c84bc8a8e7a62b93e1c0ec1b6b9f678a833e4f",
+                                        "armhf5a332e934e3c17800495562fe7e9df2fbe99904d57be498baaca59a49bbcd2c7")),
 
                         new PkgH("m/miniupnpc/libminiupnpc10_1.9.20140610-2.1",
                                 Arrays.asList(
@@ -119,12 +119,12 @@ public class Packages {
                                         "amd64ebe8b6a4c62b88db772f05c05b50d8b9f66f4d46488c547bda5042ae36865d88",
                                         "armhf34761c1df4f6f9ffe823cccb412ec11bd6b7906565ab2a9abad024d3efee1e19")),
 
-                        new PkgH("libs/libselinux/libselinux1_2.4-3+b1",
+                        new PkgH("libs/libselinux/libselinux1_2.5-3",
                                 Arrays.asList(
-                                        "i3860fd6131da4659e44c8ddebf0604447e7f6743d0cf9c24a7ca7f5b532efa26be3",
-                                        "arm643ec9dfc281df3c9868f3986f0bf70cb01df9009fb0d3af7fbc673c04cb79cd2a",
-                                        "amd6419af5899a3179dbf2978cc27f07c7b56ae4fef4e09567e18feba7638feddd853",
-                                        "armhff49b6e02281467a3f62f0a5d310566ca5d07bd2910cc308f7efc8f3f3b4c3593")),
+                                        "i38612029f46b2becf5dd01cf39d3188b31cb6f96b02b31c8b64f355b3fd84e6fb85",
+                                        "arm64ad9d6d32340857d5e11ef15d58770007dc6f832d6ed4a9e66c54017f8884a461",
+                                        "amd64ce690f8632b5f8fd961af68d8f20eaf2e146541658b71790e671190a19ab6e41",
+                                        "armhf576ff922c5dc5dc5e6f5661d85d73d457751b0ec0011e386271ceb44a2024215")),
 
                         new PkgH("g/gcc-5/libgcc1_5.3.1-14",
                                 Arrays.asList(
@@ -190,15 +190,15 @@ public class Packages {
                                         "arm6437d2ae2911e289017834cc36290f664bbb14035d80f5b51bde84e8731bca55cf",
                                         "amd641d85daab322cbe28ad31845d1b2c9a81e098e2f0d1d86b283d0b3b38fc101247",
                                         "armhfd5e8cc347497153ffc5b9647397873cbfc8413df3d090925e8ce389c6309c898"
-                                ))
+                                )),
 
-                        /*new PkgH("b/bitcoin/bitcoind_0.11.2-1",
+                        new PkgH("g/groestlcoin/groestlcoind_0.11.2-1",
                                 Arrays.asList(
-                                        "i386347449b94112686dc31d86e4dbc026a30d0352a60edf58365ae33e0117b90b0b",
-                                        "arm64f027c349237acc1f485a9f52dddbdcf81b888f8ca496e64b3ea9e8b88405bea5",
-                                        "amd6437b25a47c7e4490df58bd6fbe292e6f224fd69c2bc28f57af846b67ffaf12728",
-                                        "armhf8ef112f4fca5ba20e7d701095193d00e6e07e5ccbb1c8d0f52c11cb3c9fe3b04"))
-                                        */
+                                        "i386e97ac7581ceb232d81785aa5d0ec407797873cce5bd5ea4113501dd38eaba986",
+                                        "arm646d20330e3cb097bf875bd4e64d6a2ed6ae59a462047629a624b34d61d236a52a",
+                                        "amd64cde01fe4dc56ab27e67de29c5b6ce55b63693baf6150517565e1b5d5590dcfa4",
+                                        "armhfbdc5745fffab5a8479394553a252bc5908f1e48882084d80992e008f52a77135"))
+
                 )
         );
 

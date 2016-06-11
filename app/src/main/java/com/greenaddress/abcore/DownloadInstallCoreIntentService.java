@@ -147,7 +147,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
         final String arch = Utils.getArch();
 
         final List<Packages.PkgH> pkgs = getPackages();
-        final List<Packages.PkgH> pkgsG = getPackagesG();
+        //final List<Packages.PkgH> pkgsG = getPackagesG();
 
         try {
 
@@ -171,7 +171,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
                 }
             }
 
-            for (final Packages.PkgH d : pkgsG) {
+            /*for (final Packages.PkgH d : pkgsG) {
                 for (final String a : d.archHash) {
                     try {
                         if (a.startsWith(arch)) {
@@ -189,7 +189,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
                         throw e;
                     }
                 }
-            }
+            }*/
 
 
             // bitcoin core & deps installed, configure it now

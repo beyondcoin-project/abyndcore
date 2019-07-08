@@ -26,9 +26,9 @@ class Packages {
             "5362300i686-linux-androida646243f5fe5c32c211844ade509390765bd3af47f055901556915f866a51b67",
             "5572612x86_64-linux-androidc2a5cfcdb69fe7ba45ac1109db1c9570108782162b619d2a30490a08f343d68f"
     );
-    private final static String URL = "https://github.com/greenaddress/bitcoin_ndk/releases/download/v0.18.0c/%s_bitcoin%s.tar.xz";
-    private final static String URL_KNOTS = "https://github.com/greenaddress/bitcoin_ndk/releases/download/v0.18.0c/%s_bitcoin%s.tar.xz";
-    private final static String URL_LIQUID = "https://github.com/greenaddress/bitcoin_ndk/releases/download/v0.18.0c/%s_%s.tar.xz";
+    private final static String URL = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v0.18.0c/%s_groestlcoin%s.tar.xz";
+    private final static String URL_KNOTS = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v0.18.0c/%s_groestlcoin%s.tar.xz";
+    private final static String URL_LIQUID = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v0.18.0c/%s_%s.tar.xz";
 
     static String getPackageUrl(final String distro, final String arch) {
         if ("core".equals(distro)) {

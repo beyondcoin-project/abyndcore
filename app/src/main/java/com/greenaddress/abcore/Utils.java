@@ -183,7 +183,7 @@ class Utils {
     static boolean isDaemonInstalled(final Context c) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         final String useDistribution = prefs.getString("usedistribution", "core");
-        final String daemon = "liquid".equals(useDistribution) ? "liquidd" : "bitcoind";
+        final String daemon = "liquid".equals(useDistribution) ? "liquidd" : "groestlcoind";
         return new File(Utils.getDir(c).getAbsolutePath() + "/" + daemon).exists()
                 && new File(Utils.getDir(c).getAbsolutePath() + "/tor").exists();
     }

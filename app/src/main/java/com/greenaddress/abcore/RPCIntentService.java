@@ -144,7 +144,7 @@ public class RPCIntentService extends IntentService {
             final String host = (String) data.get("address");
             if (host != null && host.endsWith(".onion")) {
                 final Long port =  (Long) data.get("port");
-                String onion = "bitcoin-p2p://" + host;
+                String onion = "groestlcoin-p2p://" + host;
                 if (port != null && 8333 != port) {
                     onion += ":" + port;
                 }

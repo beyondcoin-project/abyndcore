@@ -15,3 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn org.apache.commons.compress.archivers.**
+-dontwarn org.apache.commons.compress.compressors.brotli.**
+-dontwarn org.apache.commons.compress.compressors.lzma.**
+-dontwarn org.apache.commons.compress.compressors.gzip.**
+-dontwarn org.apache.commons.compress.compressors.zstandard.**
+-dontwarn org.objenesis.instantiator.sun.UnsafeFactoryInstantiator
+-dontwarn org.objenesis.instantiator.util.ClassDefinitionUtils
+-dontwarn org.objenesis.instantiator.util.UnsafeUtils
+

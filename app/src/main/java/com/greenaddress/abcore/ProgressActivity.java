@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,7 +23,7 @@ public class ProgressActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
@@ -43,9 +42,8 @@ public class ProgressActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final IntentFilter filter = new IntentFilter(RPCResponseReceiver.ACTION_RESP);
-        if (rpcResponseReceiver == null) {
+        if (rpcResponseReceiver == null)
             rpcResponseReceiver = new RPCResponseReceiver();
-        }
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(rpcResponseReceiver, filter);
         refresh();
@@ -59,52 +57,45 @@ public class ProgressActivity extends AppCompatActivity {
 
     class RPCResponseReceiver extends BroadcastReceiver {
 
-        public static final String ACTION_RESP =
+        static final String ACTION_RESP =
                 "com.greenaddress.intent.action.RPC_PROCESSED";
 
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            final ProgressBar pb = (ProgressBar) findViewById(R.id.progressBarSyncBlock);
-            final TextView textStatus = (TextView) findViewById(R.id.textViewSyncBlock);
+            final ProgressBar pb = findViewById(R.id.progressBarSyncBlock);
+            final TextView textStatus = findViewById(R.id.textViewSyncBlock);
             final String text = intent.getStringExtra(RPCIntentService.PARAM_OUT_MSG);
             switch (text) {
                 case "progress": {
-                    final int max = intent.getIntExtra("max", -1);
-                    final int sync = intent.getIntExtra("sync", -1);
+                    final int max = 100;
+                    final int blocks = intent.getIntExtra("blocks", 0);
+                    final int percent = intent.getIntExtra("sync", -1);
                     if (timer != null) {
                         timer.cancel();
                         timer.purge();
                     }
-                    if (max == -1) {
-                        Snackbar.make(findViewById(android.R.id.content),
-                                "There are no peers yet", Snackbar.LENGTH_LONG).show();
-                    } else {
-                        pb.setMax(max);
-                        pb.setProgress(sync);
-                        if (max == sync) {
-                            textStatus.setText(String.format("Up to date (block height %s)", sync));
-                        } else {
-                            textStatus.setText(String.format("Processed %s%s (%s out of %s)", new DecimalFormat("#.##").format(((double) sync / max) * 100.0), "%", sync, max));
-                        }
 
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        refresh();
-                                    }
-                                });
-                            }
-                        }, 1000, 1000);
-                    }
+                    pb.setMax(max);
+                    pb.setProgress(percent);
+                    textStatus.setText(String.format("Processed %s%s (block height %s)", percent, "%", blocks));
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                }
+                            });
+                        }
+                    }, 1000, 1000);
+
 
                     break;
                 }
                 case "exception":
                     Snackbar.make(findViewById(android.R.id.content),
-                            "Core is not running", Snackbar.LENGTH_INDEFINITE).show();
+                            "Daemon is not running", Snackbar.LENGTH_INDEFINITE).show();
                     break;
             }
         }

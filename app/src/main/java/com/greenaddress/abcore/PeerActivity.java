@@ -1,5 +1,6 @@
 package com.greenaddress.abcore;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,6 +22,7 @@ public class PeerActivity extends ListActivity {
     private ArrayAdapter<String> adapter;
     private RPCResponseReceiver rpcResponseReceiver;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +32,11 @@ public class PeerActivity extends ListActivity {
         setContentView(R.layout.activity_peer);
 
         setListAdapter(adapter);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 refresh();
                 Snackbar.make(findViewById(android.R.id.content),
                         "Refreshed", Snackbar.LENGTH_LONG).show();
@@ -53,17 +55,17 @@ public class PeerActivity extends ListActivity {
     protected void onResume() {
         super.onResume();
         final IntentFilter filter = new IntentFilter(RPCResponseReceiver.ACTION_RESP);
-        if (rpcResponseReceiver == null) {
+        if (rpcResponseReceiver == null)
             rpcResponseReceiver = new RPCResponseReceiver();
-        }
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(rpcResponseReceiver, filter);
         refresh();
     }
 
+    @SuppressLint("RestrictedApi")
     private void refresh() {
-        final ProgressBar pb = (ProgressBar) findViewById(R.id.progressBarPeerList);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final ProgressBar pb = findViewById(R.id.progressBarPeerList);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         pb.setVisibility(View.VISIBLE);
         fab.setVisibility(View.GONE);
@@ -75,23 +77,24 @@ public class PeerActivity extends ListActivity {
 
     class RPCResponseReceiver extends BroadcastReceiver {
 
-        public static final String ACTION_RESP =
+        static final String ACTION_RESP =
                 "com.greenaddress.intent.action.RPC_PROCESSED";
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            final ProgressBar pb = (ProgressBar) findViewById(R.id.progressBarPeerList);
+            final ProgressBar pb = findViewById(R.id.progressBarPeerList);
             pb.setVisibility(View.GONE);
-            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            final FloatingActionButton fab = findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
             final String text = intent.getStringExtra(RPCIntentService.PARAM_OUT_MSG);
             switch (text) {
                 case "peerlist": {
                     final ArrayList<String> peers = intent.getStringArrayListExtra(text);
-                    if (peers.isEmpty()) {
+                    if (peers.isEmpty())
                         Snackbar.make(findViewById(android.R.id.content),
                                 "There are no peers yet", Snackbar.LENGTH_LONG).show();
-                    } else {
+                    else {
                         adapter.clear();
                         adapter.addAll(peers);
                         adapter.notifyDataSetChanged();
@@ -100,7 +103,7 @@ public class PeerActivity extends ListActivity {
                 }
                 case "exception":
                     Snackbar.make(findViewById(android.R.id.content),
-                            "Core is not running", Snackbar.LENGTH_INDEFINITE).show();
+                            "Daemon is not running", Snackbar.LENGTH_INDEFINITE).show();
                     break;
             }
         }

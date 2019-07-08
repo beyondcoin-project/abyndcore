@@ -1,12 +1,17 @@
 package com.greenaddress.abcore;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,166 +19,152 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.File;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getName();
-    private DownloadInstallCoreResponseReceiver downloadInstallCoreResponseReceiver;
-    private RPCResponseReceiver rpcResponseReceiver;
 
-    private static void postStart(final Activity activity) {
-        // SHOW FEE AND OTHER NODE INFO
-        final TextView status = (TextView) activity.findViewById(R.id.textView);
-        final Button button = (Button) activity.findViewById(R.id.button);
-        button.setVisibility(View.GONE);
-        status.setText("Groestlcoin Core is running, please switch Core OFF to stop it.");
-        final Switch coreSwitch = (Switch) activity.findViewById(R.id.switchCore);
+    private RPCResponseReceiver mRpcResponseReceiver;
+    private TextView mTvStatus;
+    private Switch mSwitchCore;
+    private TextView mQrCodeText;
+    private ImageView mImageViewQr;
+    private final static int SCALE = 4;
+    private Timer mTimer;
 
-        coreSwitch.setVisibility(View.VISIBLE);
-        coreSwitch.setText("Switch Core off");
-        if (!coreSwitch.isChecked()) {
-            coreSwitch.setChecked(true);
+
+    private void postStart() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String useDistribution = prefs.getString("usedistribution", "core");
+        mTvStatus.setText(getString(R.string.runningturnoff, useDistribution, "knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK : Packages.BITCOIN_NDK));
+        mSwitchCore.setText(R.string.switchcoreoff);
+        if (!mSwitchCore.isChecked()) {
+            mSwitchCore.setOnCheckedChangeListener(null);
+            mSwitchCore.setChecked(true);
+            setSwitch();
         }
-
-        setSwitch(activity);
+    }
+    private void refresh() {
+        final Intent i = new Intent(this, RPCIntentService.class);
+        i.putExtra("REQUEST", "localonion");
+        startService(i);
     }
 
-    private static void postConfigure(final Activity activity) {
-
-        final ProgressBar pb = (ProgressBar) activity.findViewById(R.id.progressBar);
-        pb.setVisibility(View.GONE);
-        final TextView tw = (TextView) activity.findViewById(R.id.textViewDetails);
-        tw.setText("Groestlcoin core fetched and configured");
-        final TextView status = (TextView) activity.findViewById(R.id.textView);
-        final Button button = (Button) activity.findViewById(R.id.button);
-        status.setText("Groestlcoin Core is not running, please switch Core ON to start it");
-        button.setVisibility(View.GONE);
-        setSwitch(activity);
+    private void postConfigure() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String useDistribution = prefs.getString("usedistribution", "core");
+        mTvStatus.setText(getString(R.string.stoppedturnon, useDistribution, "knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK : Packages.BITCOIN_NDK));
+        mSwitchCore.setText(R.string.switchcoreon);
+        if (mSwitchCore.isChecked()) {
+            mSwitchCore.setOnCheckedChangeListener(null);
+            mSwitchCore.setChecked(false);
+            setSwitch();
+        }
     }
 
-    private static void setSwitch(final Activity a) {
-        final Switch coreSwitch = (Switch) a.findViewById(R.id.switchCore);
-        coreSwitch.setVisibility(View.VISIBLE);
-        coreSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setSwitch() {
+        mSwitchCore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 if (isChecked) {
-                    final TextView tw = (TextView) a.findViewById(R.id.textViewDetails);
-                    tw.setVisibility(View.GONE);
-                    a.startService(new Intent(a, ABCoreService.class));
-                    postStart(a);
-                    coreSwitch.setText("Switch Core off");
+                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor e = prefs.edit();
+                    e.putBoolean("magicallystarted", false);
+                    e.apply();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(new Intent(MainActivity.this, ABCoreService.class));
+                    } else {
+                        startService(new Intent(MainActivity.this, ABCoreService.class));
+                    }
+                    if (mTimer != null) {
+                        mTimer.cancel();
+                        mTimer.purge();
+                    }
+                    mTimer = new Timer();
+                    mTimer.schedule(new TimerTask() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                }
+                            });
+                        }
+                    }, 1000, 1000);
                 } else {
-                    final Intent i = new Intent(a, RPCIntentService.class);
+                    final Intent i = new Intent(MainActivity.this, RPCIntentService.class);
                     i.putExtra("stop", "yep");
-                    a.startService(i);
-                    postConfigure(a);
-                    coreSwitch.setText("Switch Core on");
+                    startService(i);
                 }
             }
         });
     }
 
-    private void reset() {
-
-        final TextView tw = (TextView) findViewById(R.id.textViewDetails);
-        final TextView status = (TextView) findViewById(R.id.textView);
-        final Switch coreSwitch = (Switch) findViewById(R.id.switchCore);
-        coreSwitch.setVisibility(View.GONE);
-        coreSwitch.setText("Switch Core on");
-
-        status.setText("");
-        tw.setText("");
-        final ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
-        pb.setVisibility(View.GONE);
-
-        try {
-            // throws if the arch is unsupported
-            Utils.getArch();
-
-        } catch (final Utils.UnsupportedArch e) {
-
-            final Button button = (Button) findViewById(R.id.button);
-            button.setVisibility(View.GONE);
-
-            final String msg = String.format("Architeture %s is unsupported", e.arch);
-            status.setText(msg);
-            showSnackMsg(msg, Snackbar.LENGTH_INDEFINITE);
-            return;
-        }
-
-        // rpc check to see if core is already running!
-        startService(new Intent(this, RPCIntentService.class));
-    }
-
-    private void showSnackMsg(final String msg) {
-        showSnackMsg(msg, Snackbar.LENGTH_LONG);
-    }
-
-    private void showSnackMsg(final String msg, final int length) {
-        if (msg != null && !msg.trim().isEmpty()) {
-            Snackbar.make(findViewById(android.R.id.content),
-                    msg, length).show();
-        }
-    }
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        mTvStatus = findViewById(R.id.textView);
+        mSwitchCore = findViewById(R.id.switchCore);
+        mQrCodeText = findViewById(R.id.textViewQr);
+        mImageViewQr = findViewById(R.id.qrcodeImageView);
         setSupportActionBar(toolbar);
-        reset();
-    }
-
-    private String getSpeed(final int bytesPerSec) {
-        if (bytesPerSec == 0) {
-            return "";
-        } else if (bytesPerSec > 1024 * 1024 * 1024) {
-            return String.format("%s MB/s", bytesPerSec / (1024 * 1024 * 1024));
-        } else if (bytesPerSec > 1024 * 1024) {
-            return String.format("%s KB/s", bytesPerSec / (1024 * 1024));
-        } else if (bytesPerSec > 1024) {
-            return String.format("%s KB/s", bytesPerSec / 1024);
-        } else {
-            return String.format("%s B/s", bytesPerSec);
-        }
+        setSwitch();
+        final View.OnClickListener cliboard = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                final ClipData clip = ClipData.newPlainText("Onion Address", mQrCodeText.getText().toString());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(MainActivity.this, "Copied to clipboard!", Toast.LENGTH_LONG).show();
+            }
+        };
+        mImageViewQr.setOnClickListener(cliboard);
+        mQrCodeText.setOnClickListener(cliboard);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(downloadInstallCoreResponseReceiver);
-        unregisterReceiver(rpcResponseReceiver);
-        downloadInstallCoreResponseReceiver = null;
-        rpcResponseReceiver = null;
+        if (mRpcResponseReceiver != null)
+            unregisterReceiver(mRpcResponseReceiver);
+        mRpcResponseReceiver = null;
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer.purge();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        final IntentFilter downloadFilter = new IntentFilter(DownloadInstallCoreResponseReceiver.ACTION_RESP);
-        if (downloadInstallCoreResponseReceiver == null) {
-            downloadInstallCoreResponseReceiver = new DownloadInstallCoreResponseReceiver();
+        if (!Utils.isDaemonInstalled(this)) {
+            startActivity(new Intent(this, DownloadActivity.class));
+            return;
         }
-        downloadFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        registerReceiver(downloadInstallCoreResponseReceiver, downloadFilter);
-
 
         final IntentFilter rpcFilter = new IntentFilter(RPCResponseReceiver.ACTION_RESP);
-        if (rpcResponseReceiver == null) {
-            rpcResponseReceiver = new RPCResponseReceiver();
-        }
+        if (mRpcResponseReceiver == null)
+            mRpcResponseReceiver = new RPCResponseReceiver();
         rpcFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        registerReceiver(rpcResponseReceiver, rpcFilter);
+        registerReceiver(mRpcResponseReceiver, rpcFilter);
+
+        startService(new Intent(this, RPCIntentService.class));
     }
 
     @Override
@@ -184,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.configuration:
@@ -210,62 +201,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class DownloadInstallCoreResponseReceiver extends BroadcastReceiver {
-        public static final String ACTION_RESP =
-                "com.greenaddress.intent.action.MESSAGE_PROCESSED";
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String text = intent.getStringExtra(DownloadInstallCoreIntentService.PARAM_OUT_MSG);
-            switch (text) {
-                case "OK": {
-                    postConfigure(MainActivity.this);
-                    break;
-                }
-                case "exception": {
-                    String exe = intent.getStringExtra("exception");
-                    Log.i(TAG, exe);
-                    showSnackMsg(exe);
-                    final Button button = (Button) findViewById(R.id.button);
-                    final TextView status = (TextView) findViewById(R.id.textView);
-                    final ProgressBar pb = (ProgressBar) MainActivity.this.findViewById(R.id.progressBar);
-
-                    button.setEnabled(true);
-                    pb.setVisibility(View.GONE);
-                    pb.setProgress(0);
-                    status.setText("Please select SETUP BITCOIN CORE to download and configure Core");
-                    final Switch coreSwitch = (Switch) MainActivity.this.findViewById(R.id.switchCore);
-
-                    if (coreSwitch.isChecked()) {
-                        coreSwitch.setChecked(false);
-                    }
-
-                    reset();
-                    break;
-                }
-                case "ABCOREUPDATE": {
-
-
-                    final ProgressBar pb = (ProgressBar) MainActivity.this.findViewById(R.id.progressBar);
-                    final TextView tw = (TextView) MainActivity.this.findViewById(R.id.textViewDetails);
-                    tw.setText(String.format("%s %s", getSpeed(intent.getIntExtra("ABCOREUPDATESPEED", 0)), intent.getStringExtra("ABCOREUPDATETXT")));
-
-                    pb.setVisibility(View.VISIBLE);
-                    pb.setMax(intent.getIntExtra("ABCOREUPDATEMAX", 100));
-                    pb.setProgress(intent.getIntExtra("ABCOREUPDATE", 0));
-                    final Button button = (Button) findViewById(R.id.button);
-
-                    button.setEnabled(false);
-                    final TextView status = (TextView) findViewById(R.id.textView);
-
-                    status.setText("Please wait. Fetching, unpacking and configuring groestlcoin core...");
-
-                    break;
-                }
-            }
-        }
-    }
-
     public class RPCResponseReceiver extends BroadcastReceiver {
         public static final String ACTION_RESP =
                 "com.greenaddress.intent.action.RPC_PROCESSED";
@@ -274,60 +209,35 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(final Context context, final Intent intent) {
             final String text = intent.getStringExtra(RPCIntentService.PARAM_OUT_MSG);
             switch (text) {
-                case "OK": {
-                    postStart(MainActivity.this);
+                case "OK":
+                    postStart();
                     break;
-                }
                 case "exception":
-
-                    final boolean requiresDownload = !new File(Utils.getDir(context).getAbsolutePath() + "/usr/bin", "groestlcoind").exists();
-                    final TextView status = (TextView) findViewById(R.id.textView);
-                    final Button button = (Button) findViewById(R.id.button);
-                    final ProgressBar pb = (ProgressBar) MainActivity.this.findViewById(R.id.progressBar);
-
-                    String exe = intent.getStringExtra("exception");
-                    Log.i(TAG, exe);
-
-                    if (requiresDownload) {
-                        final float internal = Utils.megabytesAvailable(Utils.getDir(MainActivity.this));
-                        final float external = Utils.megabytesAvailable(Utils.getLargestFilesDir(MainActivity.this));
-
-                        if (internal > 70) {
-                            status.setText("Please select SETUP GROESTLCOIN CORE to download and configure Core");
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(final View v) {
-                                    button.setEnabled(false);
-                                    pb.setVisibility(View.VISIBLE);
-                                    pb.setProgress(0);
-                                    status.setText("Please wait. Fetching, unpacking and configuring groestlcoin core...");
-
-                                    startService(new Intent(MainActivity.this, DownloadInstallCoreIntentService.class));
-                                }
-                            });
-                        } else {
-                            final String msg = String.format("You have %sMB but need about 70MB available in the internal memory", internal);
-                            status.setText(msg);
-
-                            button.setVisibility(View.GONE);
-                            showSnackMsg(msg, Snackbar.LENGTH_INDEFINITE);
-                        }
-
-                        if (external < 70000) {
-                            final String msg = String.format("You have %sMB but need about 1GB available in the external memory", external);
-                            status.setText(msg);
-
-                            // button.setVisibility(View.GONE);
-                            showSnackMsg(msg);
-
-                        }
-
-
-                    } else {
-                        postConfigure(MainActivity.this);
-                    }
+                    final String exe = intent.getStringExtra("exception");
+                    if (exe != null)
+                        Log.i(TAG, exe);
+                    postConfigure();
                     break;
-
+                case "localonion":
+                    final String onion = intent.getStringExtra(RPCIntentService.PARAM_ONION_MSG);
+                    if (onion != null && mTimer != null) {
+                        mTimer.cancel();
+                        mTimer.purge();
+                    }
+                    mQrCodeText.setText(onion);
+                    final ByteMatrix matrix;
+                    try {
+                        matrix = Encoder.encode(onion, ErrorCorrectionLevel.M).getMatrix();
+                    } catch (final WriterException e) {
+                        throw new RuntimeException(e);
+                    }
+                    final int height = matrix.getHeight() * SCALE;
+                    final int width = matrix.getWidth() * SCALE;
+                    final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    for (int x = 0; x < width; ++x)
+                        for (int y = 0; y < height; ++y)
+                            bitmap.setPixel(x, y, matrix.get(x / SCALE, y / SCALE) == 1 ? Color.BLACK : 0);
+                    mImageViewQr.setImageBitmap(bitmap);
             }
         }
     }

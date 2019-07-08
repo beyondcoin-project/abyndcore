@@ -1,11 +1,12 @@
 package com.greenaddress.abcore;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -30,34 +31,28 @@ public class LogActivity extends AppCompatActivity {
                 int readByte = fileHandler.readByte();
 
                 if (readByte == 0xA) {
-                    if (filePointer < fileLength) {
+                    if (filePointer < fileLength)
                         ++line;
-                    }
                 } else if (readByte == 0xD) {
-                    if (filePointer < fileLength - 1) {
+                    if (filePointer < fileLength - 1)
                         ++line;
-                    }
                 }
-                if (line >= lines) {
+
+                if (line >= lines)
                     break;
-                }
                 sb.append((char) readByte);
             }
 
             return sb.reverse().toString();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
         } catch (final IOException e) {
             e.printStackTrace();
             return null;
         } finally {
-            if (fileHandler != null) {
+            if (fileHandler != null)
                 try {
                     fileHandler.close();
                 } catch (final IOException ignored) {
                 }
-            }
         }
     }
 
@@ -65,14 +60,18 @@ public class LogActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        final File f = new File(Utils.getDataDir(this) + (Utils.isTestnet(this) ? "/testnet3/debug.log" : "/debug.log"));
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String useDistribution = prefs.getString("usedistribution", "core");
+        final String daemon = "liquid".equals(useDistribution) ? "/liquidv1/debug.log" : "/debug.log";
+
+        final File f = new File(Utils.getDataDir(this) + (Utils.isTestnet(this) ? "/testnet3/debug.log" : daemon));
         if (!f.exists()) {
             ((EditText) findViewById(R.id.editText))
                     .setText("No debug file exists yet");
             return;
         }
 
-        final EditText et = (EditText) findViewById(R.id.editText);
+        final EditText et = findViewById(R.id.editText);
         for (int lines = 1000; lines > 0; --lines) {
             final String txt = getLastLines(f, lines);
             if (txt != null) {

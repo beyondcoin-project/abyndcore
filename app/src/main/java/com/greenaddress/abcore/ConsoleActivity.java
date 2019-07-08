@@ -17,23 +17,22 @@ public class ConsoleActivity extends AppCompatActivity {
     private RPCResponseReceiver rpcResponseReceiver;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_console);
 
-        final EditText console = (EditText) findViewById(R.id.editText2);
+        final EditText console = findViewById(R.id.editText2);
         console.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(final TextView textView, final int actionId, final KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         actionId == EditorInfo.IME_ACTION_DONE ||
                         (event != null && event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
                     if (event == null || !event.isShiftPressed()) {
                         consoleRequest(console.getText().toString());
                         return true; // consume.
                     }
-                }
                 return false; // pass on to other listeners.
             }
         });
@@ -50,9 +49,8 @@ public class ConsoleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final IntentFilter filter = new IntentFilter(RPCResponseReceiver.ACTION_RESP);
-        if (rpcResponseReceiver == null) {
+        if (rpcResponseReceiver == null)
             rpcResponseReceiver = new RPCResponseReceiver();
-        }
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(rpcResponseReceiver, filter);
     }
@@ -65,26 +63,24 @@ public class ConsoleActivity extends AppCompatActivity {
 
     class RPCResponseReceiver extends BroadcastReceiver {
 
-        public static final String ACTION_RESP =
-                "com.greenaddress.intent.action.RPC_PROCESSED";
+        static final String ACTION_RESP = "com.greenaddress.intent.action.RPC_PROCESSED";
 
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String text = intent.getStringExtra(RPCIntentService.PARAM_OUT_MSG);
-            final EditText history = (EditText) findViewById(R.id.editText);
+            final EditText history = findViewById(R.id.editText);
 
             switch (text) {
-                case "CONSOLE_REQUEST": {
-                    final EditText console = (EditText) findViewById(R.id.editText2);
+                case "CONSOLE_REQUEST":
+                    final EditText console = findViewById(R.id.editText2);
                     final String res = intent.getStringExtra("res");
 
                     history.setText(String.format("%s -> %s", console.getText().toString(), res));
                     console.setText("");
                     break;
-                }
                 case "exception":
                     Snackbar.make(findViewById(android.R.id.content),
-                            "Core is not running", Snackbar.LENGTH_INDEFINITE).show();
+                            "Daemon is not running", Snackbar.LENGTH_INDEFINITE).show();
                     break;
             }
         }

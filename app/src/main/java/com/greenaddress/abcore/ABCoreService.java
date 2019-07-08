@@ -1,152 +1,175 @@
 package com.greenaddress.abcore;
 
-
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-
 
 public class ABCoreService extends Service {
 
     private final static String TAG = ABCoreService.class.getName();
-    final static int NOTIFICATION_ID = 922430164;
+    private final static int NOTIFICATION_ID = 922430164;
+    private static final String PARAM_OUT_MSG = "rpccore";
     private Process mProcess;
+    private Process mProcessTor;
+
+    private static void removeNotification(final Context c) {
+        ((NotificationManager) c.getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFICATION_ID);
+        final Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastIntent.putExtra(PARAM_OUT_MSG, "exception");
+        broadcastIntent.putExtra("exception", "");
+        c.sendBroadcast(broadcastIntent);
+    }
 
     @Override
     public IBinder onBind(final Intent intent) {
         return null;
     }
 
-    private void setupNotification() {
-        final Intent myIntent = new Intent(this, MainActivity.class);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                myIntent, PendingIntent.FLAG_ONE_SHOT);
-        final NotificationManager nMN = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        final Notification n = new Notification.Builder(this)
-                .setContentTitle("Abcore is running")
-                .setContentIntent(pendingIntent)
-                .setContentText("Currently started")
-                .setSmallIcon(R.drawable.ic_info_black_24dp)
-                .setOngoing(true)
-                .build();
+    private void setupNotificationAndMoveToForeground() {
+        final Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        final PendingIntent pI;
+        pI = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
+        final NotificationManager nM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        nMN.notify(NOTIFICATION_ID, n);
+        final String version = Packages.getVersion(prefs.getString("version", Packages.BITCOIN_NDK));
+
+        final Notification.Builder b = new Notification.Builder(this)
+                .setContentTitle("ABCore is running")
+                .setContentIntent(pI)
+                .setContentText(String.format("Version %s", version))
+                .setSmallIcon(R.drawable.ic_info_black_24dp)
+                .setOngoing(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final int importance = NotificationManager.IMPORTANCE_LOW;
+
+            final NotificationChannel mChannel = new NotificationChannel("channel_00", "ABCore", importance);
+            mChannel.setDescription(String.format("Version %s", version));
+            mChannel.enableLights(true);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            nM.createNotificationChannel(mChannel);
+            b.setChannelId("channel_00");
+        }
+
+
+        final Notification n = b.build();
+
+        startForeground(NOTIFICATION_ID, n);
+
+        final Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastIntent.putExtra(PARAM_OUT_MSG, "OK");
+        sendBroadcast(broadcastIntent);
     }
 
     @Override
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
+        if (mProcess != null || intent == null)
+            return START_STICKY;
 
-        final String arch = Utils.getArch();
-        final File dir = Utils.getDir(this);
+
         Log.i(TAG, "Core service msg");
 
-        // start core
         try {
-            final String aarch = arch.equals("arm64") ? "aarch64" : arch.equals("amd64") ? "x86_64" : arch;
-            final String gnu;
 
-            if (arch.equals("armhf")) {
-                gnu = "gnueabihf";
-            } else {
-                gnu = "gnu";
-            }
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-            final String ld_linux;
+            final String path = getNoBackupFilesDir().getCanonicalPath();
 
-            // on arch linux it is usr/lib/ld-linux-x86-64.so.2
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            final Boolean archEnabled = prefs.getBoolean("archisenabled", false);
+            final ProcessBuilder torpb = new ProcessBuilder(
+                    String.format("%s/%s", path, "tor"),
+                    "SafeSocks",
+                    "1",
+                    "SocksPort",
+                    "auto",
+                    "NoExec",
+                    "1",
+                    "CookieAuthentication",
+                    "1",
+                    "ControlPort",
+                    "9051",
+                    "DataDirectory",
+                    path + "/tordata"
+            );
 
-            if (archEnabled) {
-                ld_linux = String.format("%s/usr/lib/ld-2.23.so", dir.getAbsoluteFile());
-            } else if ("amd64".equals(arch) || "arm64".equals(arch)) {
-                ld_linux = String.format("%s/lib/%s-linux-gnu/ld-2.22.so", dir.getAbsolutePath(), aarch);
-            } else if ("armhf".equals(arch)) {
-                ld_linux = String.format("%s/lib/ld-linux-armhf.so.3", dir.getAbsolutePath());
-            } else {
-                ld_linux = String.format("%s/lib/ld-linux.so.2", dir.getAbsoluteFile());
-            }
+            torpb.directory(new File(path));
+
+            mProcessTor = torpb.start();
+
+            final ProcessLogger.OnError er = new ProcessLogger.OnError() {
+                @Override
+                public void onError(final String[] error) {
+                    mProcess = null;
+                    final StringBuilder bf = new StringBuilder();
+                    for (final String e : error)
+                        if (!TextUtils.isEmpty(e))
+                            bf.append(String.format("%s%s", e, System.getProperty("line.separator")));
+
+                    Log.i(TAG, bf.toString());
+                }
+            };
+            final ProcessLogger torErrorGobbler = new ProcessLogger(mProcessTor.getErrorStream(), er);
+            final ProcessLogger torOutputGobbler = new ProcessLogger(mProcessTor.getInputStream(), er);
+
+            torErrorGobbler.start();
+            torOutputGobbler.start();
 
             // allow to pass in a different datadir directory
 
             // HACK: if user sets a datadir in the bitcoin.conf file that should then be the one
             // used
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            final ProcessBuilder pb = new ProcessBuilder(ld_linux,
-                    String.format("%s/usr/bin/groestlcoind", dir.getAbsolutePath()),
-                    "-server=1",
-                    String.format("-datadir=%s", Utils.getDataDir(this)),
-                    String.format("-conf=%s", Utils.getBitcoinConf(this)));
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            final String useDistribution = prefs.getString("usedistribution", "core");
+            final String daemon = "liquid".equals(useDistribution) ? "liquidd" : "groestlcoind";
+            final ProcessBuilder pb = new ProcessBuilder(
+                    String.format("%s/%s", path, daemon),
+                    "--server=1",
+                    String.format("--datadir=%s", Utils.getDataDir(this)),
+                    String.format("--conf=%s", Utils.getBitcoinConf(this)));
 
-            final Map<String, String> env = pb.environment();
-
-            // unset LD_PRELOAD for devices such as Samsung S6 (LD_PRELOAD errors on libsigchain.so starting core although works ..)
-
-            env.put("LD_PRELOAD", "");
-
-            env.put("LD_LIBRARY_PATH",
-                    String.format("%s:%s:%s:%s:%s:%s",
-                            String.format("%s/lib", dir.getAbsolutePath()),
-                            String.format("%s/usr/lib", dir.getAbsolutePath()),
-                            String.format("%s/lib/%s-linux-%s", dir.getAbsolutePath(), aarch, gnu),
-                            String.format("%s/lib/arm-linux-gnueabihf", dir.getAbsolutePath()),
-                            String.format("%s/usr/lib/%s-linux-%s", dir.getAbsolutePath(), aarch, gnu),
-                            String.format("%s/usr/lib/arm-linux-gnueabihf", dir.getAbsolutePath())
-                            //String.format("%s/usr/lib/arm-linux-gnueabihf/openssl-1.0.2/engines", dir.getAbsolutePath())
-                    ));
-
-            pb.directory(new File(Utils.getDataDir(this)));
+            pb.directory(new File(path));
 
             mProcess = pb.start();
-            final ProcessLogger.OnError er = new ProcessLogger.OnError() {
-                @Override
-                public void OnError(final String[] error) {
-                    ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFICATION_ID);
-                    final StringBuilder bf = new StringBuilder();
-                    for (final String e : error) {
-                        if (e != null && !e.isEmpty()) {
-                            bf.append(String.format("%s%s", e, System.getProperty("line.separator")));
-                        }
-                    }
-                    final Intent broadcastIntent = new Intent();
-                    broadcastIntent.setAction(MainActivity.DownloadInstallCoreResponseReceiver.ACTION_RESP);
-                    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    broadcastIntent.putExtra("abtcore", "exception");
-                    broadcastIntent.putExtra("exception", bf.toString());
 
-                    sendBroadcast(broadcastIntent);
-                }
-            };
             final ProcessLogger errorGobbler = new ProcessLogger(mProcess.getErrorStream(), er);
             final ProcessLogger outputGobbler = new ProcessLogger(mProcess.getInputStream(), er);
 
             errorGobbler.start();
             outputGobbler.start();
 
-            setupNotification();
+            setupNotificationAndMoveToForeground();
 
         } catch (final IOException e) {
             Log.i(TAG, "Native exception!");
             Log.i(TAG, e.getMessage());
 
             Log.i(TAG, e.getLocalizedMessage());
-
+            removeNotification(this);
+            mProcess = null;
+            mProcessTor = null;
             e.printStackTrace();
         }
         Log.i(TAG, "background Task finished");
-
 
         return START_STICKY;
     }
@@ -154,8 +177,13 @@ public class ABCoreService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "destroying core service");
+
         if (mProcess != null) {
             mProcess.destroy();
+            mProcessTor.destroy();
+            mProcess = null;
+            mProcessTor = null;
         }
     }
 }

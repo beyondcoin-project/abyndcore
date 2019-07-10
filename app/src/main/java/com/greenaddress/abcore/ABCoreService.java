@@ -52,7 +52,7 @@ public class ABCoreService extends Service {
         final String version = Packages.getVersion(prefs.getString("useDistribution", "core"));
 
         final Notification.Builder b = new Notification.Builder(this)
-                .setContentTitle("ABCore is running")
+                .setContentTitle("AGCore is running")
                 .setContentIntent(pI)
                 .setContentText(String.format("Version %s", version))
                 .setSmallIcon(R.drawable.ic_info_black_24dp)

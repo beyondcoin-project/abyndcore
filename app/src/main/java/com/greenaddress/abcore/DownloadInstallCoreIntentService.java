@@ -178,7 +178,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
             broadcastIntent.putExtra("ABCOREUPDATESPEED", bytesPerSec);
 
 
-        broadcastIntent.putExtra("ABCOREUPDATETXT", String.format("%s %s %s", upd, fileExtracted, "knots".equals(fileExtracted) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(fileExtracted) ? Packages.BITCOIN_LIQUID_NDK : Packages.BITCOIN_NDK));
+        broadcastIntent.putExtra("ABCOREUPDATETXT", String.format("%s %s %s", upd, fileExtracted, /*"knots".equals(fileExtracted) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(fileExtracted) ? Packages.BITCOIN_LIQUID_NDK : */Packages.BITCOIN_NDK));
 
 
         sendBroadcast(broadcastIntent);

@@ -12,7 +12,7 @@ android {
         applicationId "com.hashengineering.abcore"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 730
+        versionCode 732
         versionName "0.73"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -143,7 +143,7 @@ class Utils {
     }
 
     static String getDataDir(final Context c) {
-        final String defaultDataDir = String.format("%s/.groestlcoin", getDataDir(c));
+        final String defaultDataDir = String.format("%s/.groestlcoin", getDir(c).getAbsolutePath());
         try {
             final Properties p = new Properties();
             p.load(new BufferedInputStream(new FileInputStream(getBitcoinConf(c))));

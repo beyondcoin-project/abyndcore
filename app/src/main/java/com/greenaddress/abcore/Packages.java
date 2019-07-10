@@ -9,10 +9,10 @@ class Packages {
     //final static String BITCOIN_KNOTS_NDK = "0.18.0";
     //final static String BITCOIN_LIQUID_NDK = "0.17.0";
     final static List<String> NATIVE_CORE = Arrays.asList(
-            "4613524aarch64-linux-androidff97eb601200cae77ea89b1370f1606eddf7c53cd17ad0a9f7974539bfd270cc",
-            "4509768arm-linux-androideabi5b80ae53728f4d55620a0b3c7e0b30c412e1b36f9ec24f5ff8f7e62a565d0fa9",
-            "5247152i686-linux-androida44d181025addf73522fb80968e56dd5dade55a02287f192a80f360c6f75adb3",
-            "5448412x86_64-linux-androida30ca997e201ff80f6852769a00637b7e5676a51b2ba9c7f666c2253edcfa278"
+            "4613524aarch64-linux-androidf379b89796bfd812d36102f6459dbf1d6548edeec91dde45afbc5ee52363f4e8",
+            "4509768arm-linux-androideabi27f0d4e8d4d1e3eb8645613bc8ea5696896dc638078d1a7f66567edd10e77c05",
+            "5247152i686-linux-android402c92fbd7493a47c11b9cea1fdb682ccfd2cc67a175490a70e12139df43c575",
+            "5448412x86_64-linux-androidccf1b187667f4e00c7b0af3d2364728a7bd1af35ef43a16a7796fcc39ebff106"
     );
     /*final static List<String> NATIVE_KNOTS = Arrays.asList(
             "4686912aarch64-linux-androide97670dfb990e2a7e33226fc70501ef9ac7083e432c70ce331d1a4728177c6eb",

@@ -49,7 +49,7 @@ public class ABCoreService extends Service {
         final NotificationManager nM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        final String version = Packages.getVersion(prefs.getString("version", Packages.BITCOIN_NDK));
+        final String version = Packages.getVersion(prefs.getString("useDistribution", "core"));
 
         final Notification.Builder b = new Notification.Builder(this)
                 .setContentTitle("ABCore is running")
@@ -140,7 +140,7 @@ public class ABCoreService extends Service {
             // used
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             final String useDistribution = prefs.getString("usedistribution", "core");
-            final String daemon = "liquid".equals(useDistribution) ? "liquidd" : "groestlcoind";
+            final String daemon = /*"liquid".equals(useDistribution) ? "liquidd" :*/ "groestlcoind";
             final ProcessBuilder pb = new ProcessBuilder(
                     String.format("%s/%s", path, daemon),
                     "--server=1",

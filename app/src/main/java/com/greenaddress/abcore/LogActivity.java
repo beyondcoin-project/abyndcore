@@ -62,7 +62,7 @@ public class LogActivity extends AppCompatActivity {
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final String useDistribution = prefs.getString("usedistribution", "core");
-        final String daemon = "liquid".equals(useDistribution) ? "/liquidv1/debug.log" : "/debug.log";
+        final String daemon = /*"liquid".equals(useDistribution) ? "/liquidv1/debug.log" :*/ "/debug.log";
 
         final File f = new File(Utils.getDataDir(this) + (Utils.isTestnet(this) ? "/testnet3/debug.log" : daemon));
         if (!f.exists()) {

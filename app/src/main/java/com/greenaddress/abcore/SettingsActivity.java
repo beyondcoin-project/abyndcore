@@ -218,7 +218,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     final File dir = Utils.getDir(getActivity());
                     deleteRF(new File(dir, "shachecks"));
                     deleteRF(new File(dir, "groestlcoind"));
-                    deleteRF(new File(dir, "liquidd"));
+                   // deleteRF(new File(dir, "liquidd"));
                     getActivity().finish();
                     return true;
                 }

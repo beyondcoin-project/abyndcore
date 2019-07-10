@@ -63,7 +63,7 @@ public class RPCIntentService extends IntentService {
             final String cookieTestnet = String.format("%s/%s", p.getProperty("datadir"), "testnet3/.cookie");
             final String cookieLiquid = String.format("%s/%s", p.getProperty("datadir"), "liquidv1/.cookie");
 
-            final String daemon = "liquid".equals(useDistribution) ? cookieLiquid : cookie;
+            final String daemon = /*"liquid".equals(useDistribution) ? cookieLiquid :*/ cookie;
 
             final String fCookie = nonMainnet == null || !nonMainnet.equals("1") ? daemon : cookieTestnet;
             final File file = new File(fCookie);
@@ -90,7 +90,7 @@ public class RPCIntentService extends IntentService {
         final String url = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "1441" : port) + "/";
         final String testUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "17766" : port) + "/";
         final String liquidUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "7041" : port) + "/";
-        final String mainUrl = "liquid".equals(useDistribution) ? liquidUrl : url;
+        final String mainUrl = /*"liquid".equals(useDistribution) ? liquidUrl :*/ url;
         return !"1".equals(nonMainnet) ? mainUrl : testUrl;
     }
 

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String useDistribution = prefs.getString("usedistribution", "core");
-        mTvStatus.setText(getString(R.string.runningturnoff, useDistribution, "knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK : Packages.BITCOIN_NDK));
+        mTvStatus.setText(getString(R.string.runningturnoff, useDistribution, /*"knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK :*/ Packages.BITCOIN_NDK));
         mSwitchCore.setText(R.string.switchcoreoff);
         if (!mSwitchCore.isChecked()) {
             mSwitchCore.setOnCheckedChangeListener(null);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private void postConfigure() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final String useDistribution = prefs.getString("usedistribution", "core");
-        mTvStatus.setText(getString(R.string.stoppedturnon, useDistribution, "knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK : Packages.BITCOIN_NDK));
+        mTvStatus.setText(getString(R.string.stoppedturnon, useDistribution, /*"knots".equals(useDistribution) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(useDistribution) ? Packages.BITCOIN_LIQUID_NDK :*/ Packages.BITCOIN_NDK));
         mSwitchCore.setText(R.string.switchcoreon);
         if (mSwitchCore.isChecked()) {
             mSwitchCore.setOnCheckedChangeListener(null);

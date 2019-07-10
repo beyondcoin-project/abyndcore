@@ -94,7 +94,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
             final String useDistribution = prefs.getString("usedistribution", "core");
-            final List<String> distro = "knots".equals(useDistribution) ? Packages.NATIVE_KNOTS : "liquid".equals(useDistribution) ? Packages.NATIVE_LIQUID : Packages.NATIVE_CORE;
+            final List<String> distro = /*"knots".equals(useDistribution) ? Packages.NATIVE_KNOTS : "liquid".equals(useDistribution) ? Packages.NATIVE_LIQUID :*/ Packages.NATIVE_CORE;
 
             final String url = Packages.getPackageUrl(useDistribution, arch);
             final String filePath = Utils.getFilePathFromUrl(this, url);

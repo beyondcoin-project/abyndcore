@@ -120,8 +120,8 @@ public class DownloadActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.download, menu);
+        //final MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.download, menu);
         return true;
     }
 

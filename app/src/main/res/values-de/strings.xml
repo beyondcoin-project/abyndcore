@@ -1,18 +1,18 @@
 <resources>
-    <string name="download_core">Die App benötigt Groestlcoin zum Funktionieren. Betätigen Sie die Schaltfläche um den Download und die Konfigurierung von Groestlcoin zu beginnen.</string>
+    <string name="download_core">Die App benötigt Beyondcoin zum Funktionieren. Betätigen Sie die Schaltfläche um den Download und die Konfigurierung von Beyondcoin zu beginnen.</string>
     <string name="failedretry">Fehler. Erneut versuchen?</string>
     <string name="pleasewait">"Bitte haben Sie etwas Geduld, während der Kern gesucht wird…</string>
     <string name="pref_header_android">Extrakonfiguration</string>
-    <string name="pref_header_conf">Groestlcoin Konfiguration</string>
+    <string name="pref_header_conf">Beyondcoin Konfiguration</string>
     <string name="pref_header_conf_download">Konfiguration herunterladen</string>
-    <string name="pref_title_edit_bitcoin_conf">groestlcoin.conf manuell editieren</string>
-    <string name="runningturnoff">Groestlcoin %1$s %2$s läuft, bitte stellen Sie den Kern auf "OFF" zum Stoppen.</string>
+    <string name="pref_title_edit_bitcoin_conf">beyondcoin.conf manuell editieren</string>
+    <string name="runningturnoff">Beyondcoin %1$s %2$s läuft, bitte stellen Sie den Kern auf "OFF" zum Stoppen.</string>
     <string name="start">Download beginnen</string>
-    <string name="stoppedturnon">Groestlcoin %1$s %2$s läuft nicht, bitte stellen Sie den Kern auf "ON" zum Starten."</string>
+    <string name="stoppedturnon">Beyondcoin %1$s %2$s läuft nicht, bitte stellen Sie den Kern auf "ON" zum Starten."</string>
     <string name="switchcoreoff">Kern auf OFF stellen</string>
     <string name="switchcoreon">Kern auf ON stellen</string>
     <string name="title_activity_download_settings">Einstellungen herunterladen</string>
     <string name="title_activity_progress">Synchronisationsfortschritt</string>
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="waitfetchingconfiguring">Bitte haben Sie etwas Geduld&#8230; Lade und konfiguriere Groestlcoin.</string>
+    <string name="waitfetchingconfiguring">Bitte haben Sie etwas Geduld&#8230; Lade und konfiguriere Beyondcoin.</string>
 </resources>

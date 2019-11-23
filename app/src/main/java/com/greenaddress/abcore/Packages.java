@@ -5,7 +5,7 @@ import java.util.List;
 
 class Packages {
 
-    final static String BITCOIN_NDK = "2.17.2";
+    final static String BITCOIN_NDK = "0.15.1";
     //final static String BITCOIN_KNOTS_NDK = "0.18.0";
     //final static String BITCOIN_LIQUID_NDK = "0.17.0";
     final static List<String> NATIVE_CORE = Arrays.asList(
@@ -26,9 +26,9 @@ class Packages {
             "5362300i686-linux-androida646243f5fe5c32c211844ade509390765bd3af47f055901556915f866a51b67",
             "5572612x86_64-linux-androidc2a5cfcdb69fe7ba45ac1109db1c9570108782162b619d2a30490a08f343d68f"
     );*/
-    private final static String URL = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v2.17.2/%s_groestlcoin%s.tar.xz";
-    //private final static String URL_KNOTS = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v0.18.0c/%s_groestlcoin%s.tar.xz";
-    //private final static String URL_LIQUID = "https://github.com/Groestlcoin/groestlcoin_ndk/releases/download/v0.18.0c/%s_%s.tar.xz";
+    private final static String URL = "https://github.com/beyondcoin-project/beyondcoin/releases/download/v0.15.1/beyondcoin-0.15.1.tar.gz";
+    //private final static String URL_KNOTS = "https://github.com/beyondcoin-project/beyondcoin_ndk/releases/download/v0.18.0c/%s_beyondcoin%s.tar.xz";
+    //private final static String URL_LIQUID = "https://github.com/beyondcoin-project/beyondcoin_ndk/releases/download/v0.18.0c/%s_%s.tar.xz";
 
     static String getPackageUrl(final String distro, final String arch) {
         if ("core".equals(distro)) {

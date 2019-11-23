@@ -52,7 +52,7 @@ public class ABCoreService extends Service {
         final String version = Packages.getVersion(prefs.getString("useDistribution", "core"));
 
         final Notification.Builder b = new Notification.Builder(this)
-                .setContentTitle("AGCore is running")
+                .setContentTitle("ABYNDCore is running")
                 .setContentIntent(pI)
                 .setContentText(String.format("Version %s", version))
                 .setSmallIcon(R.drawable.ic_info_black_24dp)
@@ -140,7 +140,7 @@ public class ABCoreService extends Service {
             // used
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             final String useDistribution = prefs.getString("usedistribution", "core");
-            final String daemon = /*"liquid".equals(useDistribution) ? "liquidd" :*/ "groestlcoind";
+            final String daemon = /*"liquid".equals(useDistribution) ? "liquidd" :*/ "beyondcoind";
             final ProcessBuilder pb = new ProcessBuilder(
                     String.format("%s/%s", path, daemon),
                     "--server=1",

@@ -57,7 +57,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
 
             // Afaik ipv6 is broken on android, disable by default, user can change this
             // outputStream.write("onlynet=ipv6\n".getBytes());
-            outputStream.write(String.format("datadir=%s\n", String.format("%s/.groestlcoin", Utils.getDir(c).getAbsolutePath())).getBytes());
+            outputStream.write(String.format("datadir=%s\n", String.format("%s/.beyondcoin", Utils.getDir(c).getAbsolutePath())).getBytes());
 
             IOUtils.closeQuietly(outputStream);
         } catch (final IOException e) {
@@ -133,7 +133,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
 
             Utils.extractTarXz(new File(filePath), dir);
 
-            // groestlcoin core & deps installed, configure it now
+            // beyondcoin core & deps installed, configure it now
             configureCore(this);
 
             // notify

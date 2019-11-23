@@ -87,8 +87,8 @@ public class RPCIntentService extends IntentService {
         }
         final String host = p.getProperty("rpcconnect", "127.0.0.1");
         final String port = p.getProperty("rpcport");
-        final String url = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "1441" : port) + "/";
-        final String testUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "17766" : port) + "/";
+        final String url = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "10332" : port) + "/";
+        final String testUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "14332" : port) + "/";
         final String liquidUrl = "http://" + user + ':' + password + "@" + host + ":" + (port == null ? "7041" : port) + "/";
         final String mainUrl = /*"liquid".equals(useDistribution) ? liquidUrl :*/ url;
         return !"1".equals(nonMainnet) ? mainUrl : testUrl;
@@ -144,7 +144,7 @@ public class RPCIntentService extends IntentService {
             final String host = (String) data.get("address");
             if (host != null && host.endsWith(".onion")) {
                 final Long port =  (Long) data.get("port");
-                String onion = "groestlcoin-p2p://" + host;
+                String onion = "beyondcoin-p2p://" + host;
                 if (port != null && 8333 != port) {
                     onion += ":" + port;
                 }

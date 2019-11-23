@@ -139,11 +139,11 @@ class Utils {
     }
 
     static String getBitcoinConf(final Context c) {
-        return String.format("%s/.groestlcoin/groestlcoin.conf", getDir(c).getAbsolutePath());
+        return String.format("%s/.beyondcoin/beyondcoin.conf", getDir(c).getAbsolutePath());
     }
 
     static String getDataDir(final Context c) {
-        final String defaultDataDir = String.format("%s/.groestlcoin", getDir(c).getAbsolutePath());
+        final String defaultDataDir = String.format("%s/.beyondcoin", getDir(c).getAbsolutePath());
         try {
             final Properties p = new Properties();
             p.load(new BufferedInputStream(new FileInputStream(getBitcoinConf(c))));
@@ -183,7 +183,7 @@ class Utils {
     static boolean isDaemonInstalled(final Context c) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         final String useDistribution = prefs.getString("usedistribution", "core");
-        final String daemon = /*"liquid".equals(useDistribution) ? "liquidd" :*/ "groestlcoind";
+        final String daemon = /*"liquid".equals(useDistribution) ? "liquidd" :*/ "beyondcoind";
         return new File(Utils.getDir(c).getAbsolutePath() + "/" + daemon).exists()
                 && new File(Utils.getDir(c).getAbsolutePath() + "/tor").exists();
     }

@@ -5,8 +5,8 @@
         <item>liquid</item>
     </string-array>
     <string-array name="pref_use_options" >
-        <item>Groestlcoin Core</item>
-        <item>Groestlcoin Knots</item>
+        <item>Beyondcoin Core</item>
+        <item>Beyondcoin Knots</item>
         <item>Blockstream Liquid</item>
     </string-array>
 </resources>

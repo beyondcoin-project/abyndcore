@@ -3,18 +3,18 @@ ABYNDCore - Android Beyondcoin Core
 
 [![Build Status](https://travis-ci.org/beyondcoin-project/abyndcore.svg?branch=master)](https://travis-ci.org/beyondcoin-project/abyndcore)
 
-<a href="http://abco.re"> <img src="http://abco.re/assets/images/schema.png" alt="Infographic" width="650" height="650"></a>
+<!--<a href="http://abco.re"> <img src="http://abco.re/assets/images/schema.png" alt="Infographic" width="650" height="650"></a>-->
 
-Web site: <a href="http://abco.re">abco.re</a>
+<!--Web site: <a href="http://abco.re">abco.re</a>-->
 
 Warning: This app is still in a very Proof of Concept/Alpha stage.
 
-<a href="https://f-droid.org/packages/com.greenaddress.abcore/" target="_blank">
+<!--<a href="https://f-droid.org/packages/com.greenaddress.abcore/" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" height="90"/></a>
 <a href="https://play.google.com/apps/testing/com.greenaddress.abcore" target="_blank">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="90"/></a>
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="90"/></a>-->
 
-If you want to try it, you can also get it directly from GitHub [here](https://github.com/beyondcoin-project/abyndcore/releases/tag/v0.63alphaPoC).
+<!--If you want to try it, you can also get it directly from GitHub [here](https://github.com/beyondcoin-project/abyndcore/releases/tag/v0.63alphaPoC).-->
 
 What is Android Beyondcoin Core?
 --------------------------------

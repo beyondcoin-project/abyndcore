@@ -99,14 +99,14 @@ public class RPCIntentService extends IntentService {
     }
 
     private void broadcastPeerlist() throws IOException {
-        final BitcoindRpcClient bitcoin = getRpc();
+        final BitcoindRpcClient beyondcoin = getRpc();
 
         final Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(PARAM_OUT_MSG, "peerlist");
 
-        final List<BitcoindRpcClient.PeerInfoResult> pir = bitcoin.getPeerInfo();
+        final List<BitcoindRpcClient.PeerInfoResult> pir = beyondcoin.getPeerInfo();
         final ArrayList<String> peers = new ArrayList<>();
         // find the most common blockchain height that is higher than hardcoded constant
         for (final BitcoindRpcClient.PeerInfoResult r : pir)
@@ -118,14 +118,14 @@ public class RPCIntentService extends IntentService {
     }
 
     private void broadcastProgress() throws IOException {
-        final BitcoindRpcClient bitcoin = getRpc();
+        final BitcoindRpcClient beyondcoin = getRpc();
 
         final Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(PARAM_OUT_MSG, "progress");
 
-        final BitcoindRpcClient.BlockChainInfo info = bitcoin.getBlockChainInfo();
+        final BitcoindRpcClient.BlockChainInfo info = beyondcoin.getBlockChainInfo();
         broadcastIntent.putExtra("sync", info.verificationProgress().multiply(BigDecimal.valueOf(100)).intValue());
         broadcastIntent.putExtra("blocks", info.blocks());
         sendBroadcast(broadcastIntent);
@@ -133,12 +133,12 @@ public class RPCIntentService extends IntentService {
     }
 
     private void broadcastNetwork() throws IOException {
-        final BitcoindRpcClient bitcoin = getRpc();
+        final BitcoindRpcClient beyondcoin = getRpc();
         final Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(PARAM_OUT_MSG, "localonion");
-        final BitcoindRpcClient.NetworkInfo info = bitcoin.getNetworkInfo();
+        final BitcoindRpcClient.NetworkInfo info = beyondcoin.getNetworkInfo();
         for (final Object addrs : info.localAddresses()) {
             final Map data = (Map) addrs;
             final String host = (String) data.get("address");
@@ -194,7 +194,7 @@ public class RPCIntentService extends IntentService {
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
             broadcastIntent.putExtra(PARAM_OUT_MSG, "CONSOLE_REQUEST");
             try {
-                final BitcoinJSONRPCClient bitcoin = new BitcoinJSONRPCClient(getRpcUrl());
+                final BitcoinJSONRPCClient beyondcoin = new BitcoinJSONRPCClient(getRpcUrl());
 
                 Log.v(TAG, console_request);
 
@@ -202,11 +202,11 @@ public class RPCIntentService extends IntentService {
 
                     final String[] array = console_request.split(" ");
                     if (array.length > 1)
-                        broadcastIntent.putExtra("res", bitcoin.query(array[0],
+                        broadcastIntent.putExtra("res", beyondcoin.query(array[0],
                                 (Object[]) Arrays.copyOfRange(array, 1, array.length)).toString());
 
                     else
-                        broadcastIntent.putExtra("res", bitcoin.query(console_request).toString());
+                        broadcastIntent.putExtra("res", beyondcoin.query(console_request).toString());
 
                 } catch (final BitcoinRPCException e) {
                     broadcastIntent.putExtra("res", "Failed, Verifying blocks?");

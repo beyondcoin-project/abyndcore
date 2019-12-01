@@ -2,7 +2,7 @@
     <string translatable="false" name="app_name">ABYNDCore</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_download_settings">Download Settings</string>
-    <string name="pref_title_edit_bitcoin_conf">Manually edit beyondcoin.conf</string>
+    <string name="pref_title_edit_beyondcoin_conf">Manually edit beyondcoin.conf</string>
     <string name="pref_header_conf">Daemon Configuration</string>
     <string name="pref_header_conf_download">Download Configuration</string>
     <string name="pref_header_android">Extra Configuration</string>

@@ -42,7 +42,7 @@ During the initial configuration it connects to Github to fetch the required bin
 Limitations
 -----------
 
-ABYNDCore requires a fair amount of ram (tested with 2GB) and a fair amount of disk space (tested with 256GB for non pruned node) as well as a decent always on connection - 3G or 4G is not advised.
+ABYNDCore requires a fair amount of ram (tested with 2GB) and a fair amount of disk space (tested with 2GB for non pruned node) as well as a decent always on connection - 3G or 4G is not advised.
 
 We also do not advise to use this as a wallet at this time, we advise to use this as your personal blockchain anchor when on the go with wallets that support to set a personal node.
 

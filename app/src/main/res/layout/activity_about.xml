@@ -32,7 +32,7 @@
             android:layout_alignParentEnd="true" android:linksClickable="true" android:autoLink="web"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium"
-                  android:text="Development (ABYNDCore)\n\tHash Engineering Solutions\n\thashengineeringsolutions@gmail.com\n\nDevelopment (ABCore)\n\tLawrence Nahum\n\ttwitter.com/LarryBitcoin\n\nSpecial thanks to the Beyondcoin Core Dev Team github.com/beyondcoin-project."
+                  android:text="Development (ABYNDCore)\n\tBeyondcoin Project\n\tadmin@beyonddata.llc\n\nDevelopment (ABYNDCore)\n\tKristian Kramer\n\tkristian@beyonddata.llc\n\nDevelopment (ABCore)\n\tLawrence Nahum\n\ttwitter.com/LarryBitcoin\n\nSpecial thanks to the Beyondcoin Core Dev Team github.com/beyondcoin-project."
                   android:id="@+id/textViewContrib"
                   android:linksClickable="true"
                   android:autoLink="web|email"

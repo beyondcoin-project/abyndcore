@@ -145,7 +145,7 @@ public class RPCIntentService extends IntentService {
             if (host != null && host.endsWith(".onion")) {
                 final Long port =  (Long) data.get("port");
                 String onion = "beyondcoin-p2p://" + host;
-                if (port != null && 8333 != port) {
+                if (port != null && 10333 != port) {
                     onion += ":" + port;
                 }
                 broadcastIntent.putExtra(PARAM_ONION_MSG, onion);
@@ -239,14 +239,14 @@ public class RPCIntentService extends IntentService {
                     return;
                 }
 
-            final BitcoindRpcClient bitcoin = getRpc();
+            final BitcoindRpcClient beyondcoin = getRpc();
 
             final Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(MainActivity.RPCResponseReceiver.ACTION_RESP);
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
             broadcastIntent.putExtra(PARAM_OUT_MSG, "OK");
             // verify we are fully connected to rpc
-            bitcoin.getBlockCount();
+            beyondcoin.getBlockCount();
 
             sendBroadcast(broadcastIntent);
 

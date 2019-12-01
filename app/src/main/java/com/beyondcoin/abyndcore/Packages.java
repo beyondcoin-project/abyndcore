@@ -5,9 +5,9 @@ import java.util.List;
 
 class Packages {
 
-    final static String BITCOIN_NDK = "0.15.1";
-    //final static String BITCOIN_KNOTS_NDK = "0.18.0";
-    //final static String BITCOIN_LIQUID_NDK = "0.17.0";
+    final static String BEYONDCOIN_NDK = "0.15.1";
+    //final static String BEYONDCOIN_KNOTS_NDK = "0.18.0";
+    //final static String BEYONDCOIN_LIQUID_NDK = "0.17.0";
     final static List<String> NATIVE_CORE = Arrays.asList(
             "4613524aarch64-linux-androidf379b89796bfd812d36102f6459dbf1d6548edeec91dde45afbc5ee52363f4e8",
             "4509768arm-linux-androideabi27f0d4e8d4d1e3eb8645613bc8ea5696896dc638078d1a7f66567edd10e77c05",
@@ -43,11 +43,11 @@ class Packages {
 
     static String getVersion(final String distro) {
         if ("core".equals(distro)) {
-            return BITCOIN_NDK;
+            return BEYONDCOIN_NDK;
         } /*else if ("liquid".equals(distro)) {
-            return BITCOIN_LIQUID_NDK;
+            return BEYONDCOIN_LIQUID_NDK;
         }
-        return BITCOIN_KNOTS_NDK;*/
+        return BEYONDCOIN_KNOTS_NDK;*/
         else return "";
     }
 }

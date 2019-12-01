@@ -1,7 +1,7 @@
 <resources>
     <string name="title_activity_settings">Paramètres</string>
     <string name="title_activity_download_settings">Paramètres de téléchargement</string>
-    <string name="pref_title_edit_bitcoin_conf">Modifier manuellement beyondcoin.conf</string>
+    <string name="pref_title_edit_beyondcoin_conf">Modifier manuellement beyondcoin.conf</string>
     <string name="pref_header_conf">Configuration Beyondcoin</string>
     <string name="pref_header_conf_download">Configuration du téléchargement</string>
     <string name="pref_header_android">Configuration Supplémentaire</string>

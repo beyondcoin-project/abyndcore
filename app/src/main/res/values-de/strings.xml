@@ -5,7 +5,7 @@
     <string name="pref_header_android">Extrakonfiguration</string>
     <string name="pref_header_conf">Beyondcoin Konfiguration</string>
     <string name="pref_header_conf_download">Konfiguration herunterladen</string>
-    <string name="pref_title_edit_bitcoin_conf">beyondcoin.conf manuell editieren</string>
+    <string name="pref_title_edit_beyondcoin_conf">beyondcoin.conf manuell editieren</string>
     <string name="runningturnoff">Beyondcoin %1$s %2$s läuft, bitte stellen Sie den Kern auf "OFF" zum Stoppen.</string>
     <string name="start">Download beginnen</string>
     <string name="stoppedturnon">Beyondcoin %1$s %2$s läuft nicht, bitte stellen Sie den Kern auf "ON" zum Starten."</string>

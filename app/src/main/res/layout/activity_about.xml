@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.greenaddress.abcore.AboutActivity">
+    tools:context="com.beyondcoin.abyndcore.AboutActivity">
 
     <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
 

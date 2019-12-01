@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -82,9 +82,9 @@ public class PowerBroadcastReceiver extends BroadcastReceiver {
     private void startCore(final Context c) {
         setMagicallyStarted(c, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.startForegroundService(new Intent(c, ABCoreService.class));
+            c.startForegroundService(new Intent(c, ABYNDCoreService.class));
         } else {
-            c.startService(new Intent(c, ABCoreService.class));
+            c.startService(new Intent(c, ABYNDCoreService.class));
         }
     }
 

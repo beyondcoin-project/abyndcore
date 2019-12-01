@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

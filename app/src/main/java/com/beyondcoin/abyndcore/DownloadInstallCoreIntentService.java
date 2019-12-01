@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 
 import android.app.IntentService;
@@ -170,15 +170,15 @@ public class DownloadInstallCoreIntentService extends IntentService {
 
         broadcastIntent.setAction(DownloadActivity.DownloadInstallCoreResponseReceiver.ACTION_RESP);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        broadcastIntent.putExtra(PARAM_OUT_MSG, "ABCOREUPDATE");
+        broadcastIntent.putExtra(PARAM_OUT_MSG, "ABYNDCOREUPDATE");
 
-        broadcastIntent.putExtra("ABCOREUPDATE", bytesDownloaded);
-        broadcastIntent.putExtra("ABCOREUPDATEMAX", bytesSize);
+        broadcastIntent.putExtra("ABYNDCOREUPDATE", bytesDownloaded);
+        broadcastIntent.putExtra("ABYNDCOREUPDATEMAX", bytesSize);
         if (bytesPerSec != null)
-            broadcastIntent.putExtra("ABCOREUPDATESPEED", bytesPerSec);
+            broadcastIntent.putExtra("ABYNDCOREUPDATESPEED", bytesPerSec);
 
 
-        broadcastIntent.putExtra("ABCOREUPDATETXT", String.format("%s %s %s", upd, fileExtracted, /*"knots".equals(fileExtracted) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(fileExtracted) ? Packages.BITCOIN_LIQUID_NDK : */Packages.BITCOIN_NDK));
+        broadcastIntent.putExtra("ABYNDCOREUPDATETXT", String.format("%s %s %s", upd, fileExtracted, /*"knots".equals(fileExtracted) ? Packages.BITCOIN_KNOTS_NDK : "liquid".equals(fileExtracted) ? Packages.BITCOIN_LIQUID_NDK : */Packages.BITCOIN_NDK));
 
 
         sendBroadcast(broadcastIntent);

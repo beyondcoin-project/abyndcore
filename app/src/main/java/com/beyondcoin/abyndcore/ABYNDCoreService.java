@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,9 +17,9 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-public class ABCoreService extends Service {
+public class ABYNDCoreService extends Service {
 
-    private final static String TAG = ABCoreService.class.getName();
+    private final static String TAG = ABYNDCoreService.class.getName();
     private final static int NOTIFICATION_ID = 922430164;
     private static final String PARAM_OUT_MSG = "rpccore";
     private Process mProcess;
@@ -61,7 +61,7 @@ public class ABCoreService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final int importance = NotificationManager.IMPORTANCE_LOW;
 
-            final NotificationChannel mChannel = new NotificationChannel("channel_00", "ABCore", importance);
+            final NotificationChannel mChannel = new NotificationChannel("channel_00", "ABYNDCore", importance);
             mChannel.setDescription(String.format("Version %s", version));
             mChannel.enableLights(true);
             mChannel.enableVibration(true);

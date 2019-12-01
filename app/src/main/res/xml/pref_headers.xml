@@ -1,12 +1,12 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="com.greenaddress.abcore.SettingsActivity$CorePreferenceFragment"
+        android:fragment="com.beyondcoin.abyndcore.SettingsActivity$CorePreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_conf"/>
 
     <header
-        android:fragment="com.greenaddress.abcore.SettingsActivity$AndroidPreferenceFragment"
+        android:fragment="com.beyondcoin.abyndcore.SettingsActivity$AndroidPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_android"/>
 

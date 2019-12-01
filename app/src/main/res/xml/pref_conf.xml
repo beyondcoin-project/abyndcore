@@ -12,7 +12,7 @@
     <Preference android:title="Datadir" android:key="datadir"/>
 
     <Preference android:title="@string/pref_title_edit_bitcoin_conf">
-        <intent android:action="com.greenaddress.abcore.BitcoinConfEditActivity"/>
+        <intent android:action="com.beyondcoin.abyndcore.BitcoinConfEditActivity"/>
     </Preference>
 
 </PreferenceScreen>

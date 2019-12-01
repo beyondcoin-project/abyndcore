@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -155,12 +155,12 @@ public class DownloadActivity extends AppCompatActivity {
                     mButton.setEnabled(true);
                     mTvStatus.setText(R.string.failedretry);
                     break;
-                case "ABCOREUPDATE":
+                case "ABYNDCOREUPDATE":
 
-                    mTvDetails.setText(String.format("%s %s", intent.getStringExtra("ABCOREUPDATETXT"), getSpeed(intent.getIntExtra("ABCOREUPDATESPEED", 0))));
+                    mTvDetails.setText(String.format("%s %s", intent.getStringExtra("ABYNDCOREUPDATETXT"), getSpeed(intent.getIntExtra("ABYNDCOREUPDATESPEED", 0))));
 
-                    mPB.setMax(intent.getIntExtra("ABCOREUPDATEMAX", 100));
-                    mPB.setProgress(intent.getIntExtra("ABCOREUPDATE", 0));
+                    mPB.setMax(intent.getIntExtra("ABYNDCOREUPDATEMAX", 100));
+                    mPB.setProgress(intent.getIntExtra("ABYNDCOREUPDATE", 0));
                     mPB.setVisibility(View.VISIBLE);
 
                     break;

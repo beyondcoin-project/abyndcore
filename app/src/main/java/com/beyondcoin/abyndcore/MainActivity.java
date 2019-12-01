@@ -1,4 +1,4 @@
-package com.greenaddress.abcore;
+package com.beyondcoin.abyndcore;
 
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -85,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
                     e.putBoolean("magicallystarted", false);
                     e.apply();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(new Intent(MainActivity.this, ABCoreService.class));
+                        startForegroundService(new Intent(MainActivity.this, ABYNDCoreService.class));
                     } else {
-                        startService(new Intent(MainActivity.this, ABCoreService.class));
+                        startService(new Intent(MainActivity.this, ABYNDCoreService.class));
                     }
                     if (mTimer != null) {
                         mTimer.cancel();

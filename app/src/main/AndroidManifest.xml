@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.greenaddress.abcore"
+<manifest package="com.beyondcoin.abyndcore"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -30,14 +30,14 @@
             android:name=".RPCIntentService"
             android:exported="false"/>
         <service
-            android:name=".ABCoreService"
+            android:name=".ABYNDCoreService"
             android:exported="false"/>
 
         <activity android:name=".BitcoinConfEditActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
 
-                <action android:name="com.greenaddress.abcore.BitcoinConfEditActivity"/>
+                <action android:name="com.beyondcoin.abyndcore.BitcoinConfEditActivity"/>
             </intent-filter>
         </activity>
         <activity android:name=".AboutActivity"/>

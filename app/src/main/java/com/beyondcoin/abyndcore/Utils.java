@@ -138,7 +138,7 @@ class Utils {
         return c.getNoBackupFilesDir();
     }
 
-    static String getBitcoinConf(final Context c) {
+    static String getBeyondcoinConf(final Context c) {
         return String.format("%s/.beyondcoin/beyondcoin.conf", getDir(c).getAbsolutePath());
     }
 
@@ -146,7 +146,7 @@ class Utils {
         final String defaultDataDir = String.format("%s/.beyondcoin", getDir(c).getAbsolutePath());
         try {
             final Properties p = new Properties();
-            p.load(new BufferedInputStream(new FileInputStream(getBitcoinConf(c))));
+            p.load(new BufferedInputStream(new FileInputStream(getBeyondcoinConf(c))));
             return p.getProperty("datadir", defaultDataDir);
         } catch (final IOException e) {
             return defaultDataDir;
@@ -156,7 +156,7 @@ class Utils {
     static boolean isTestnet(final Context c) {
         try {
             final Properties p = new Properties();
-            p.load(new BufferedInputStream(new FileInputStream(getBitcoinConf(c))));
+            p.load(new BufferedInputStream(new FileInputStream(getBeyondcoinConf(c))));
             return p.getProperty("testnet", p.getProperty("regtest", "0")).equals("1");
         } catch (final IOException e) {
             return false;

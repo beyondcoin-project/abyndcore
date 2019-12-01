@@ -28,7 +28,7 @@ public class DownloadInstallCoreIntentService extends IntentService {
 
     public static void configureCore(final Context c) throws IOException {
 
-        final File coreConf = new File(Utils.getBitcoinConf(c));
+        final File coreConf = new File(Utils.getBeyondcoinConf(c));
         if (coreConf.exists())
             return;
         //noinspection ResultOfMethodCallIgnored

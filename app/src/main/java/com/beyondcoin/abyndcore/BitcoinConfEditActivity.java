@@ -19,13 +19,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-public class BitcoinConfEditActivity extends AppCompatActivity {
-    private final static String TAG = BitcoinConfEditActivity.class.getName();
+public class BeyondcoinConfEditActivity extends AppCompatActivity {
+    private final static String TAG = BeyondcoinConfEditActivity.class.getName();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bitcoin_conf_edit);
+        setContentView(R.layout.activity_beyondcoin_conf_edit);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class BitcoinConfEditActivity extends AppCompatActivity {
         // save file
         OutputStream f = null;
         try {
-            f = new FileOutputStream(Utils.getBitcoinConf(this));
+            f = new FileOutputStream(Utils.getBeyondcoinConf(this));
             IOUtils.copy(new ByteArrayInputStream(((EditText) findViewById(R.id.editText))
                     .getText().toString().getBytes(StandardCharsets.UTF_8)), f);
 
@@ -60,7 +60,7 @@ public class BitcoinConfEditActivity extends AppCompatActivity {
         // load file
         try {
             DownloadInstallCoreIntentService.configureCore(this);
-            final InputStream f = new FileInputStream(Utils.getBitcoinConf(this));
+            final InputStream f = new FileInputStream(Utils.getBeyondcoinConf(this));
             ((EditText) findViewById(R.id.editText))
                     .setText(new String(IOUtils.toByteArray(
                             f)));

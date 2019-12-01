@@ -136,7 +136,7 @@ public class ABYNDCoreService extends Service {
 
             // allow to pass in a different datadir directory
 
-            // HACK: if user sets a datadir in the bitcoin.conf file that should then be the one
+            // HACK: if user sets a datadir in the beyondcoin.conf file that should then be the one
             // used
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             final String useDistribution = prefs.getString("usedistribution", "core");
@@ -145,7 +145,7 @@ public class ABYNDCoreService extends Service {
                     String.format("%s/%s", path, daemon),
                     "--server=1",
                     String.format("--datadir=%s", Utils.getDataDir(this)),
-                    String.format("--conf=%s", Utils.getBitcoinConf(this)));
+                    String.format("--conf=%s", Utils.getBeyondcoinConf(this)));
 
             pb.directory(new File(path));
 

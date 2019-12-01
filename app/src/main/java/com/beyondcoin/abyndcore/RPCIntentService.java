@@ -39,9 +39,9 @@ public class RPCIntentService extends IntentService {
         super(RPCIntentService.class.getName());
     }
 
-    private Properties getBitcoinConf() throws IOException {
+    private Properties getBeyondcoinConf() throws IOException {
         final Properties p = new Properties();
-        final InputStream i = new BufferedInputStream(new FileInputStream(Utils.getBitcoinConf(this)));
+        final InputStream i = new BufferedInputStream(new FileInputStream(Utils.getBeyondcoinConf(this)));
         try {
             p.load(i);
         } finally {
@@ -51,7 +51,7 @@ public class RPCIntentService extends IntentService {
     }
 
     private String getRpcUrl() throws IOException {
-        final Properties p = getBitcoinConf();
+        final Properties p = getBeyondcoinConf();
         String user = p.getProperty("rpcuser");
         String password = p.getProperty("rpcpassword");
         final String testnet = p.getProperty("testnet");

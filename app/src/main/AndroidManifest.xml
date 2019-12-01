@@ -33,11 +33,11 @@
             android:name=".ABYNDCoreService"
             android:exported="false"/>
 
-        <activity android:name=".BitcoinConfEditActivity">
+        <activity android:name=".BeyondcoinConfEditActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
 
-                <action android:name="com.beyondcoin.abyndcore.BitcoinConfEditActivity"/>
+                <action android:name="com.beyondcoin.abyndcore.BeyondcoinConfEditActivity"/>
             </intent-filter>
         </activity>
         <activity android:name=".AboutActivity"/>

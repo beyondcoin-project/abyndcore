@@ -115,7 +115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             final Properties p = new Properties();
             try {
-                p.load(new FileInputStream(Utils.getBitcoinConf(getActivity())));
+                p.load(new FileInputStream(Utils.getBeyondcoinConf(getActivity())));
 
                 final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 final SharedPreferences.Editor e = prefs.edit();
@@ -142,7 +142,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                     p.setProperty(preference.getKey(), (Boolean) newValue ? "1" : "0");
                     try {
-                        p.store(new FileOutputStream(Utils.getBitcoinConf(getActivity())), "");
+                        p.store(new FileOutputStream(Utils.getBeyondcoinConf(getActivity())), "");
                     } catch (final IOException e) {
                         e.printStackTrace();
                     }
@@ -163,7 +163,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     p.setProperty("prune", o.toString());
                     preference.setSummary(o.toString());
                     try {
-                        p.store(new FileOutputStream(Utils.getBitcoinConf(getActivity())), "");
+                        p.store(new FileOutputStream(Utils.getBeyondcoinConf(getActivity())), "");
                     } catch (final IOException e) {
                         e.printStackTrace();
                         return false;
@@ -182,7 +182,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
 
                     try {
-                        p.store(new FileOutputStream(Utils.getBitcoinConf(getActivity())), "");
+                        p.store(new FileOutputStream(Utils.getBeyondcoinConf(getActivity())), "");
                     } catch (final IOException e) {
                         e.printStackTrace();
                         return false;
